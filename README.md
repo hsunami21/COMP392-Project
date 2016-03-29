@@ -1,3 +1,3 @@
-#COMP392-Lesson9
+#Hey, Listen
 
-COMP392-Lesson9 for COMP392 - Advanced Graphics @ Centennial College
+Hey, Listen - Project for COMP392 Advanced Graphics @ Centennial College

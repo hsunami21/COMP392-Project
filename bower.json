@@ -1,13 +1,13 @@
 {
-  "name": "comp392-lesson10",
+  "name": "karstewen-comp392-project",
   "authors": [
-    "Tom Tsiliopoulos <tsiliopoulos@hotmail.com>"
+    "Karstewen Gaming"
   ],
-  "description": "COMP392 Lesson 9 for Advanced Graphics",
+  "description": "COMP392-Project",
   "main": "",
   "moduleType": [],
   "license": "MIT",
-  "homepage": "https://github.com/CentennialCollege/COMP392-Lesson10",
+  "homepage": "https://github.com/hsunami21/COMP392-Project",
   "ignore": [
     "**/.*",
     "node_modules",
