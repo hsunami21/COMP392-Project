@@ -46,7 +46,10 @@ var manifest = [
     { id: "hit", src: "../../Assets/audio/hit.wav" },
     { id: "coin", src: "../../Assets/audio/coin.mp3" },
     { id: "jump", src: "../../Assets/audio/Jump.wav" },
-    { id: "StartButton", src: "../../Assets/images/StartButton.png" }
+    { id: "StartButton", src: "../../Assets/images/Button_Play.png" },
+    { id: "InstructionsButton", src: "../../Assets/images/Button_Instr.png" },
+    { id: "RestartButton", src: "../../Assets/images/Button_Restart.png" },
+    { id: "BackButton", src: "../../Assets/images/Button_Back.png" }
 ];
 function preload() {
     assets = new createjs.LoadQueue();

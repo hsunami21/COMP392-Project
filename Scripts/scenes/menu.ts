@@ -71,7 +71,7 @@ module scenes {
          */
         public start(): void {
             this._gameLabel = new createjs.Text(
-                "HEY, LISTEN",
+                "HEY, LISTEN!",
                 "80px Consolas",
                 "#000000");
             this._gameLabel.regX = this._gameLabel.getMeasuredWidth() * 0.5;
@@ -100,7 +100,7 @@ module scenes {
                 changeScene();
             });
             
-            this._instructionsButton = new createjs.Bitmap(assets.getResult("StartButton"));
+            this._instructionsButton = new createjs.Bitmap(assets.getResult("InstructionsButton"));
             this._instructionsButton.regX = this._instructionsButton.getBounds().width * 0.5;
             this._instructionsButton.regY = this._instructionsButton.getBounds().height * 0.5;
             this._instructionsButton.x = config.Screen.WIDTH * 0.5;

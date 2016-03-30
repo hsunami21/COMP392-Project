@@ -62,7 +62,7 @@ var scenes;
          * @return void
          */
         Menu.prototype.start = function () {
-            this._gameLabel = new createjs.Text("HEY, LISTEN", "80px Consolas", "#000000");
+            this._gameLabel = new createjs.Text("HEY, LISTEN!", "80px Consolas", "#000000");
             this._gameLabel.regX = this._gameLabel.getMeasuredWidth() * 0.5;
             this._gameLabel.regY = this._gameLabel.getMeasuredLineHeight() * 0.5;
             this._gameLabel.x = config.Screen.WIDTH * 0.5;
@@ -84,7 +84,7 @@ var scenes;
                 currentScene = config.Scene.LEVEL1;
                 changeScene();
             });
-            this._instructionsButton = new createjs.Bitmap(assets.getResult("StartButton"));
+            this._instructionsButton = new createjs.Bitmap(assets.getResult("InstructionsButton"));
             this._instructionsButton.regX = this._instructionsButton.getBounds().width * 0.5;
             this._instructionsButton.regY = this._instructionsButton.getBounds().height * 0.5;
             this._instructionsButton.x = config.Screen.WIDTH * 0.5;
