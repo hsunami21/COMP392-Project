@@ -43,10 +43,13 @@ module scenes {
 
         private stage: createjs.Stage;
         private scoreLabel: createjs.Text;
-        private livesLabel: createjs.Text;
+        private timerLabel: createjs.Text;
         private scoreValue: number;
-        private livesValue: number;
-
+        private timerValue: number;
+        
+        private waitTime: boolean;
+        private gameOver: boolean;
+        
         /**
          * @constructor
          */
@@ -86,9 +89,10 @@ module scenes {
             // setup canvas for menu scene
             this._setupCanvas();
             
-            
             this.coinCount = 10;
             this.prevTime = 0;
+            this.waitTime = false;
+
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
 
@@ -108,17 +112,17 @@ module scenes {
         private setupScoreboard(): void {
             // initialize  score and lives values
             this.scoreValue = 0;
-            this.livesValue = 5;
+            this.timerValue = 60;
 
             // Add Lives Label
-            this.livesLabel = new createjs.Text(
-                "LIVES: " + this.livesValue,
+            this.timerLabel = new createjs.Text(
+                "TIME: " + this.timerValue,
                 "40px Consolas",
                 "#ffffff"
             );
-            this.livesLabel.x = config.Screen.WIDTH * 0.1;
-            this.livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
-            this.stage.addChild(this.livesLabel);
+            this.timerLabel.x = config.Screen.WIDTH * 0.4;
+            this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
+            this.stage.addChild(this.timerLabel);
             console.log("Added Lives Label to stage");
 
             // Add Score Label
@@ -127,8 +131,8 @@ module scenes {
                 "40px Consolas",
                 "#ffffff"
             );
-            this.scoreLabel.x = config.Screen.WIDTH * 0.8;
-            this.scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+            this.scoreLabel.x = config.Screen.WIDTH * 0.1;
+            this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.scoreLabel);
             console.log("Added Score Label to stage");
         }
@@ -283,13 +287,24 @@ module scenes {
                 this.mouseControls.enabled = true;
                 this.blocker.style.display = 'none';
             } else {
-                // disable our mouse and keyboard controls
                 this.keyboardControls.enabled = false;
                 this.mouseControls.enabled = false;
-                this.blocker.style.display = '-webkit-box';
-                this.blocker.style.display = '-moz-box';
-                this.blocker.style.display = 'box';
-                this.instructions.style.display = '';
+                if (this.gameOver) {
+                    this.blocker.style.display = 'none';
+                    document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+                    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+                    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+                }
+                else {
+                    // disable our mouse and keyboard controls
+                    this.blocker.style.display = '-webkit-box';
+                    this.blocker.style.display = '-moz-box';
+                    this.blocker.style.display = 'box';
+                    this.instructions.style.display = '';
+                }
                 console.log("PointerLock disabled");
             }
         }
@@ -367,6 +382,21 @@ module scenes {
             }
         }
 
+        private simulateScene(): void {
+            this.simulate(undefined, 2);
+        }
+        
+        private reduceTimer(): void{
+            var self = this;
+            if (!this.waitTime) {
+                this.waitTime = true;
+                setTimeout(function() {
+                    self.timerValue += -1;
+                    self.waitTime = false;
+                }, 1000);
+            }
+        }
+
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
 
         /**
@@ -417,9 +447,7 @@ module scenes {
             this.fog = new THREE.Fog(0xffffff, 0, 750);
             this.setGravity(new THREE.Vector3(0, -10, 0));
 
-            this.addEventListener('update', () => {
-                this.simulate(undefined, 2);
-            });
+            this.addEventListener('update', this.simulateScene);
 
             // Add Spot Light to the scene
             this.addSpotLight();
@@ -437,8 +465,6 @@ module scenes {
             this.addDeathPlane();
 
             // Collision Check
-
-
             this.player.addEventListener('collision', function(eventObject) {
                 if (eventObject.name === "Ground") {
                     this.isGrounded = true;
@@ -454,11 +480,20 @@ module scenes {
 
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
-                    this.livesValue--;
-                    this.livesLabel.text = "LIVES: " + this.livesValue;
-                    this.remove(this.player);
-                    this.player.position.set(0, 30, 10);
-                    this.add(this.player);
+                    this.timerValue--;
+                    if (this.timerValue <= 0) {                        
+                        document.exitPointerLock(); 
+                        this.children = [];
+                        this.removeEventListener('update', this.simulateScene);                       
+                        currentScene = config.Scene.OVER;
+                        changeScene();
+                    }
+                    else {
+                        this.timerLabel.text = "time: " + this.timerValue;
+                        this.remove(this.player);
+                        this.player.position.set(0, 30, 10);
+                        this.add(this.player);
+                    }
                 }
             }.bind(this));
 
@@ -490,6 +525,23 @@ module scenes {
          * @returns void
          */
         public update(): void {
+            
+            if (this.gameOver == true) {
+                document.exitPointerLock(); 
+                this.children = [];
+                this.removeEventListener('update', this.simulateScene);                       
+                currentScene = config.Scene.OVER;
+                changeScene();
+            }
+
+            this.timerLabel.text = "TIME: " + this.timerValue;
+
+            if (this.timerValue >= 0) {
+                this.reduceTimer();
+            }
+            else {
+                this.gameOver = true;
+            }
 
             this.coins.forEach(coin => {
                 coin.setAngularFactor(new Vector3(0, 0, 0));
@@ -508,10 +560,10 @@ module scenes {
          */
         public resize(): void {
             canvas.style.width = "100%";
-            this.livesLabel.x = config.Screen.WIDTH * 0.1;
-            this.livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
-            this.scoreLabel.x = config.Screen.WIDTH * 0.8;
-            this.scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+            this.timerLabel.x = config.Screen.WIDTH * 0.4;
+            this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
+            this.scoreLabel.x = config.Screen.WIDTH * 0.1;
+            this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.update();
         }
     }

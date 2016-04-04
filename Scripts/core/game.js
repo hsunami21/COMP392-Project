@@ -38,6 +38,7 @@ var camera;
 var menu;
 var lvl1;
 var instr;
+var over;
 var stats;
 var canvas;
 var assets;
@@ -150,11 +151,9 @@ function changeScene() {
             break;
         case config.Scene.OVER:
             // show the game OVER scene
-            /*
             over = new scenes.Over();
             scene = over;
             console.log("Starting OVER Scene");
-            */
             break;
         case config.Scene.INSTRUCTIONS:
             // show the INSTRUCTIONS scene

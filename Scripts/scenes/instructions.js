@@ -28,6 +28,7 @@ var scenes;
             this._stage = new createjs.Stage(canvas);
             this._stage.enableMouseOver(20);
         };
+        // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++
         Instructions.prototype.start = function () {
             this._gameLabel = new createjs.Text("INSTRUCTIONS", "48px Consolas", "#000000");
             this._gameLabel.regX = this._gameLabel.getMeasuredWidth() * 0.5;

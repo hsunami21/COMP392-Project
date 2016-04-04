@@ -33,6 +33,8 @@ module scenes {
             this._stage.enableMouseOver(20);
         }
 
+        // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++
+
         public start(): void {
             this._gameLabel = new createjs.Text(
                 "INSTRUCTIONS",

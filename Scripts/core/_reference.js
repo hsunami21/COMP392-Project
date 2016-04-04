@@ -5,5 +5,6 @@
 /// <reference path="../scenes/scene.ts" />
 /// <reference path="../scenes/level1.ts" />
 /// <reference path="../scenes/instructions.ts" />
+/// <reference path="../scenes/over.ts" />
 /// <reference path="../scenes/menu.ts" /> 
 //# sourceMappingURL=_reference.js.map
