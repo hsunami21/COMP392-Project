@@ -118,6 +118,7 @@ var scenes;
          */
         Menu.prototype.resize = function () {
             this._setupCanvas();
+            this.simulate();
         };
         return Menu;
     })(scenes.Scene);

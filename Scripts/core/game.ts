@@ -33,7 +33,8 @@ import Clock = THREE.Clock;
 // Setup a Web Worker for Physijs
 Physijs.scripts.worker = "/Scripts/lib/Physijs/physijs_worker.js";
 Physijs.scripts.ammo = "/Scripts/lib/Physijs/examples/js/ammo.js";
-
+var myWorker = new Worker(Physijs.scripts.worker);
+ 
 // Game Variables
 var scene: scenes.Scene;
 var currentScene: number;
@@ -138,6 +139,7 @@ function setupRenderer(): void {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
     renderer.shadowMap.enabled = true;
+    renderer.autoClear = true;
     console.log("Finished setting up Renderer...");
 }
 

@@ -69,6 +69,7 @@ module scenes {
 
         public update(): void {
             this._stage.update();
+            this.simulate();
         }
 
         public resize(): void {

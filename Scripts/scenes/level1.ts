@@ -112,7 +112,7 @@ module scenes {
         private setupScoreboard(): void {
             // initialize  score and lives values
             this.scoreValue = 0;
-            this.timerValue = 60;
+            this.timerValue = 5;
 
             // Add Lives Label
             this.timerLabel = new createjs.Text(
@@ -207,7 +207,7 @@ module scenes {
             this.playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
 
             this.player = new Physijs.BoxMesh(this.playerGeometry, this.playerMaterial, 1);
-            this.player.position.set(0, 30, 10);
+            this.player.position.set(0, 5, 10);
             this.player.receiveShadow = true;
             this.player.castShadow = true;
             this.player.name = "Player";
@@ -381,10 +381,6 @@ module scenes {
                 this.player.setAngularVelocity(new Vector3(0, 0, 0));
             }
         }
-
-        private simulateScene(): void {
-            this.simulate(undefined, 2);
-        }
         
         private reduceTimer(): void{
             var self = this;
@@ -447,8 +443,6 @@ module scenes {
             this.fog = new THREE.Fog(0xffffff, 0, 750);
             this.setGravity(new THREE.Vector3(0, -10, 0));
 
-            this.addEventListener('update', this.simulateScene);
-
             // Add Spot Light to the scene
             this.addSpotLight();
 
@@ -480,20 +474,10 @@ module scenes {
 
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
-                    this.timerValue--;
-                    if (this.timerValue <= 0) {                        
-                        document.exitPointerLock(); 
-                        this.children = [];
-                        this.removeEventListener('update', this.simulateScene);                       
-                        currentScene = config.Scene.OVER;
-                        changeScene();
-                    }
-                    else {
-                        this.timerLabel.text = "time: " + this.timerValue;
-                        this.remove(this.player);
-                        this.player.position.set(0, 30, 10);
-                        this.add(this.player);
-                    }
+                    this.remove(this.player);
+                    this.player.position.set(0, 5, 10);
+                    this.add(this.player);
+                    
                 }
             }.bind(this));
 
@@ -529,7 +513,7 @@ module scenes {
             if (this.gameOver == true) {
                 document.exitPointerLock(); 
                 this.children = [];
-                this.removeEventListener('update', this.simulateScene);                       
+                this.player.remove(camera);
                 currentScene = config.Scene.OVER;
                 changeScene();
             }
@@ -550,6 +534,7 @@ module scenes {
 
             this.checkControls();
             this.stage.update();
+            this.simulate();
         }
 
         /**

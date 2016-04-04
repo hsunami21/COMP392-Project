@@ -71,7 +71,7 @@ var scenes;
         Level1.prototype.setupScoreboard = function () {
             // initialize  score and lives values
             this.scoreValue = 0;
-            this.timerValue = 60;
+            this.timerValue = 5;
             // Add Lives Label
             this.timerLabel = new createjs.Text("TIME: " + this.timerValue, "40px Consolas", "#ffffff");
             this.timerLabel.x = config.Screen.WIDTH * 0.4;
@@ -149,7 +149,7 @@ var scenes;
             this.playerGeometry = new BoxGeometry(2, 4, 2);
             this.playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
             this.player = new Physijs.BoxMesh(this.playerGeometry, this.playerMaterial, 1);
-            this.player.position.set(0, 30, 10);
+            this.player.position.set(0, 5, 10);
             this.player.receiveShadow = true;
             this.player.castShadow = true;
             this.player.name = "Player";
@@ -302,9 +302,6 @@ var scenes;
                 this.player.setAngularVelocity(new Vector3(0, 0, 0));
             }
         };
-        Level1.prototype.simulateScene = function () {
-            this.simulate(undefined, 2);
-        };
         Level1.prototype.reduceTimer = function () {
             var self = this;
             if (!this.waitTime) {
@@ -352,7 +349,6 @@ var scenes;
             this.name = "Main";
             this.fog = new THREE.Fog(0xffffff, 0, 750);
             this.setGravity(new THREE.Vector3(0, -10, 0));
-            this.addEventListener('update', this.simulateScene);
             // Add Spot Light to the scene
             this.addSpotLight();
             // Ground Object
@@ -378,20 +374,9 @@ var scenes;
                 }
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
-                    this.timerValue--;
-                    if (this.timerValue <= 0) {
-                        document.exitPointerLock();
-                        this.children = [];
-                        this.removeEventListener('update', this.simulateScene);
-                        currentScene = config.Scene.OVER;
-                        changeScene();
-                    }
-                    else {
-                        this.timerLabel.text = "time: " + this.timerValue;
-                        this.remove(this.player);
-                        this.player.position.set(0, 30, 10);
-                        this.add(this.player);
-                    }
+                    this.remove(this.player);
+                    this.player.position.set(0, 5, 10);
+                    this.add(this.player);
                 }
             }.bind(this));
             // create parent-child relationship with camera and player
@@ -420,7 +405,7 @@ var scenes;
             if (this.gameOver == true) {
                 document.exitPointerLock();
                 this.children = [];
-                this.removeEventListener('update', this.simulateScene);
+                this.player.remove(camera);
                 currentScene = config.Scene.OVER;
                 changeScene();
             }
@@ -437,6 +422,7 @@ var scenes;
             });
             this.checkControls();
             this.stage.update();
+            this.simulate();
         };
         /**
          * Responds to screen resizes

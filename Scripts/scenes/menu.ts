@@ -139,6 +139,7 @@ module scenes {
          */
         public resize(): void {
             this._setupCanvas();
+            this.simulate();
         }
     }
 }

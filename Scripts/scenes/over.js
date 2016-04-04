@@ -55,6 +55,7 @@ var scenes;
         };
         Over.prototype.update = function () {
             this._stage.update();
+            this.simulate();
         };
         Over.prototype.resize = function () {
             this._setupCanvas();
