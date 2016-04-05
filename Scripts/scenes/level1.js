@@ -221,14 +221,30 @@ var scenes;
          */
         Level1.prototype.addWalls = function () {
             // wall Object
-            this.wallGeometry = new BoxGeometry(1, 1, 10);
+            this.wallHorizontalGeometry = new BoxGeometry(1, 1, 10);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
-            this.wall = new Physijs.ConvexMesh(this.wallGeometry, this.wallMaterial, 0);
-            this.wall.position.set(-3, 1, 0);
-            this.wall.receiveShadow = true;
-            this.wall.name = "wall1";
-            this.add(this.wall);
-            console.log("Added wall1 to Scene");
+            //wall 1
+            this.wall1 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.wall1.position.set(3, 1, 0);
+            this.wall1.receiveShadow = true;
+            this.wall1.name = "wall1";
+            this.add(this.wall1);
+            console.log("Added wall 1 to Scene");
+            //wall 2
+            this.wall2 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.wall2.position.set(-3, 1, 0);
+            this.wall2.receiveShadow = true;
+            this.wall2.name = "wall2";
+            this.add(this.wall2);
+            console.log("Added wall 2 to Scene");
+            //wall 3
+            this.wallVerticalGeometry = new BoxGeometry(15, 1, 1);
+            this.wall3 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall3.position.set(-4, 1, 0);
+            this.wall3.receiveShadow = true;
+            this.wall3.name = "wall3";
+            this.add(this.wall3);
+            console.log("Added wall 3 to Scene");
         };
         /**
          * Add the death plane to the scene
