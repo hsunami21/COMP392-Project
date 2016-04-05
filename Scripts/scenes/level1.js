@@ -71,7 +71,7 @@ var scenes;
         Level1.prototype.setupScoreboard = function () {
             // initialize  score and lives values
             this.scoreValue = 0;
-            this.timerValue = 5;
+            this.timerValue = 60;
             // Add Lives Label
             this.timerLabel = new createjs.Text("TIME: " + this.timerValue, "40px Consolas", "#ffffff");
             this.timerLabel.x = config.Screen.WIDTH * 0.4;
@@ -84,6 +84,12 @@ var scenes;
             this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.scoreLabel);
             console.log("Added Score Label to stage");
+            // Add Location Label
+            this.gotoLabel = new createjs.Text("GO TO: " + this.randomLocation(), "40px Consolas", "#ffffff");
+            this.gotoLabel.x = config.Screen.WIDTH * 0.65;
+            this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
+            this.stage.addChild(this.gotoLabel);
+            console.log("Added Location Label to stage");
         };
         /**
          * Add a spotLight to the scene
@@ -312,6 +318,37 @@ var scenes;
                 }, 1000);
             }
         };
+        Level1.prototype.randomLocation = function () {
+            this.randomNum = Math.floor(Math.random() * 3);
+            console.log(this.randomNum);
+            switch (this.randomNum) {
+                case 0:
+                    if (this.gotoText == "Red Platform") {
+                        this.randomLocation();
+                    }
+                    else {
+                        this.gotoText = "Red Platform";
+                    }
+                    break;
+                case 1:
+                    if (this.gotoText == "Green Platform") {
+                        this.randomLocation();
+                    }
+                    else {
+                        this.gotoText = "Green Platform";
+                    }
+                    break;
+                case 2:
+                    if (this.gotoText == "Blue Platform") {
+                        this.randomLocation();
+                    }
+                    else {
+                        this.gotoText = "Blue Platform";
+                    }
+                    break;
+            }
+            return this.gotoText;
+        };
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
         /**
          * The start method is the main method for the scene class
@@ -321,6 +358,8 @@ var scenes;
          */
         Level1.prototype.start = function () {
             var _this = this;
+            // Set random location at start
+            this.randomLocation();
             // Set Up Scoreboard
             this.setupScoreboard();
             //check to see if pointerlock is supported
@@ -371,6 +410,7 @@ var scenes;
                     this.setCoinPosition(eventObject);
                     this.scoreValue += 100;
                     this.scoreLabel.text = "SCORE: " + this.scoreValue;
+                    this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
@@ -436,6 +476,8 @@ var scenes;
             this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.scoreLabel.x = config.Screen.WIDTH * 0.1;
             this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
+            this.gotoLabel.x = config.Screen.WIDTH * 0.65;
+            this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.update();
         };
         return Level1;

@@ -44,9 +44,12 @@ module scenes {
         private stage: createjs.Stage;
         private scoreLabel: createjs.Text;
         private timerLabel: createjs.Text;
+        private gotoLabel: createjs.Text;
         private scoreValue: number;
         private timerValue: number;
+        private gotoText: string;
         
+        private randomNum: number;
         private waitTime: boolean;
         private gameOver: boolean;
         
@@ -112,7 +115,7 @@ module scenes {
         private setupScoreboard(): void {
             // initialize  score and lives values
             this.scoreValue = 0;
-            this.timerValue = 5;
+            this.timerValue = 60;
 
             // Add Lives Label
             this.timerLabel = new createjs.Text(
@@ -135,6 +138,17 @@ module scenes {
             this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.scoreLabel);
             console.log("Added Score Label to stage");
+            
+            // Add Location Label
+            this.gotoLabel = new createjs.Text(
+                "GO TO: " + this.randomLocation(),
+                "40px Consolas",
+                "#ffffff"
+            );
+            this.gotoLabel.x = config.Screen.WIDTH * 0.65;
+            this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
+            this.stage.addChild(this.gotoLabel);
+            console.log("Added Location Label to stage");
         }
 
         /**
@@ -392,6 +406,38 @@ module scenes {
                 }, 1000);
             }
         }
+        
+        private randomLocation(): string {
+            this.randomNum = Math.floor(Math.random() * 3);
+            console.log(this.randomNum);
+            switch (this.randomNum) {
+                case 0:
+                    if (this.gotoText == "Red Platform") {
+                        this.randomLocation();
+                    }
+                    else {
+                        this.gotoText = "Red Platform";
+                    }
+                    break;
+                case 1:
+                    if (this.gotoText == "Green Platform") {
+                        this.randomLocation();
+                    }
+                    else {
+                        this.gotoText = "Green Platform";
+                    }
+                    break;
+                case 2:
+                    if (this.gotoText == "Blue Platform") {
+                        this.randomLocation();
+                    }
+                    else {
+                        this.gotoText = "Blue Platform";
+                    }
+                    break;
+            }
+            return this.gotoText;
+        }
 
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
 
@@ -403,7 +449,9 @@ module scenes {
          */
         public start(): void {
             
-
+            // Set random location at start
+            this.randomLocation();
+            
             // Set Up Scoreboard
             this.setupScoreboard();
 
@@ -470,6 +518,8 @@ module scenes {
                     this.setCoinPosition(eventObject);
                     this.scoreValue += 100;
                     this.scoreLabel.text = "SCORE: " + this.scoreValue;
+                    this.gotoLabel.text = "GO TO: " + this.randomLocation();
+
                 }
 
                 if (eventObject.name === "DeathPlane") {
@@ -477,7 +527,6 @@ module scenes {
                     this.remove(this.player);
                     this.player.position.set(0, 5, 10);
                     this.add(this.player);
-                    
                 }
             }.bind(this));
 
@@ -549,6 +598,8 @@ module scenes {
             this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.scoreLabel.x = config.Screen.WIDTH * 0.1;
             this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
+            this.gotoLabel.x = config.Screen.WIDTH * 0.65;
+            this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.update();
         }
     }
