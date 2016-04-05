@@ -41,6 +41,11 @@ module scenes {
         private platformGeometry: CubeGeometry;
         private platformMaterial: Physijs.Material;
         private platform: Physijs.Mesh;
+        
+        //Wall
+        private wallGeometry: CubeGeometry;
+        private wallMaterial: Physijs.Material;
+        private wall: Physijs.Mesh;
 
         private velocity: Vector3;
         private prevTime: number;
@@ -292,6 +297,26 @@ module scenes {
             this.platform.name = "RedPlatform";
             this.add(this.platform);
             console.log("Added Red Platform to Scene")
+        }
+        
+        /**
+         * Add wall to the scene
+         * 
+         * @method addGreenPlatform
+         * @return void
+         */
+        
+        private addWall(): void {
+            // Platform Object
+            this.wallGeometry = new BoxGeometry(10, 2, 10);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+            
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(50, 1, -50)
+            this.platform.receiveShadow = true;
+            this.platform.name = "BluePlatform";
+            this.add(this.platform);
+            console.log("Added Blue Platform to Scene")
         }
 
         /**
