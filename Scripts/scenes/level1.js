@@ -100,7 +100,7 @@ var scenes;
         Level1.prototype.addSpotLight = function () {
             // Spot Light
             this.spotLight = new SpotLight(0xffffff);
-            this.spotLight.position.set(20, 40, -15);
+            this.spotLight.position.set(20, 128, -15);
             this.spotLight.castShadow = true;
             this.spotLight.intensity = 2;
             this.spotLight.lookAt(new Vector3(0, 0, 0));
@@ -136,7 +136,7 @@ var scenes;
             this.groundMaterial.map = this.groundTexture;
             this.groundMaterial.bumpMap = this.groundTextureNormal;
             this.groundMaterial.bumpScale = 0.2;
-            this.groundGeometry = new BoxGeometry(32, 1, 32);
+            this.groundGeometry = new BoxGeometry(128, 1, 128);
             this.groundPhysicsMaterial = Physijs.createMaterial(this.groundMaterial, 0, 0);
             this.ground = new Physijs.ConvexMesh(this.groundGeometry, this.groundPhysicsMaterial, 0);
             this.ground.receiveShadow = true;
@@ -161,6 +161,57 @@ var scenes;
             this.player.name = "Player";
             this.add(this.player);
             console.log("Added Player to Scene");
+        };
+        /**
+         * Add the Green Platform to the scene
+         *
+         * @method addGreenPlatform
+         * @return void
+         */
+        Level1.prototype.addGreenPlatform = function () {
+            // Platform Object
+            this.platformGeometry = new BoxGeometry(10, 2, 10);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(-50, 1, 50);
+            this.platform.receiveShadow = true;
+            this.platform.name = "GreenPlatform";
+            this.add(this.platform);
+            console.log("Added Green Platform to Scene");
+        };
+        /**
+         * Add the Green Platform to the scene
+         *
+         * @method addGreenPlatform
+         * @return void
+         */
+        Level1.prototype.addBluePlatform = function () {
+            // Platform Object
+            this.platformGeometry = new BoxGeometry(10, 2, 10);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(50, 1, -50);
+            this.platform.receiveShadow = true;
+            this.platform.name = "BluePlatform";
+            this.add(this.platform);
+            console.log("Added Blue Platform to Scene");
+        };
+        /**
+         * Add the Green Platform to the scene
+         *
+         * @method addGreenPlatform
+         * @return void
+         */
+        Level1.prototype.addRedPlatform = function () {
+            // Platform Object
+            this.platformGeometry = new BoxGeometry(10, 2, 10);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(50, 1, 50);
+            this.platform.receiveShadow = true;
+            this.platform.name = "RedPlatform";
+            this.add(this.platform);
+            console.log("Added Red Platform to Scene");
         };
         /**
          * Add the death plane to the scene
@@ -394,6 +445,12 @@ var scenes;
             this.addGround();
             // Add player controller
             this.addPlayer();
+            //Add green platform
+            this.addGreenPlatform();
+            //Add blue platform
+            this.addBluePlatform();
+            //Add red platform
+            this.addRedPlatform();
             // Add custom coin imported from Blender
             this.addCoinMesh();
             // Add death plane to the scene
@@ -411,6 +468,15 @@ var scenes;
                     this.scoreValue += 100;
                     this.scoreLabel.text = "SCORE: " + this.scoreValue;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
+                }
+                if (eventObject.name === "GreenPlatform") {
+                    this.gotoLabel.text = "Go TO: " + this.randomLocation();
+                }
+                if (eventObject.name === "BluePlatform") {
+                    this.gotoLabel.text = "Go TO: " + this.randomLocation();
+                }
+                if (eventObject.name === "RedPlatform") {
+                    this.gotoLabel.text = "Go TO: " + this.randomLocation();
                 }
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
