@@ -302,22 +302,22 @@ module scenes {
         /**
          * Add wall to the scene
          * 
-         * @method addGreenPlatform
+         * @method addWalls
          * @return void
          */
         
-        // private addWall(): void {
-        //     // wall Object
-        //     this.wallGeometry = new BoxGeometry(10, 2, 10);
-        //     this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+         private addWalls(): void {
+             // wall Object
+             this.wallGeometry = new BoxGeometry(1, 1, 10);
+             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
             
-        //     this.wall = new Physijs.ConvexMesh(this.wallGeometry, this.wallMaterial, 0);
-        //     this.wall.position.set(50, 1, -50)
-        //     this.wall.receiveShadow = true;
-        //     this.wall.name = "BluePlatform";
-        //     this.add(this.wall);
-        //     console.log("Added Blue Platform to Scene")
-        // }
+             this.wall = new Physijs.ConvexMesh(this.wallGeometry, this.wallMaterial, 0);
+             this.wall.position.set(-3, 1, 0)
+             this.wall.receiveShadow = true;
+             this.wall.name = "wall1";
+             this.add(this.wall);
+             console.log("Added wall1 to Scene")
+         }
 
         /**
          * Add the death plane to the scene
@@ -598,6 +598,9 @@ module scenes {
             
             //Add red platform
             this.addRedPlatform();
+            
+            //Add walls
+            this.addWalls();
 
             // Add custom coin imported from Blender
             this.addCoinMesh();
