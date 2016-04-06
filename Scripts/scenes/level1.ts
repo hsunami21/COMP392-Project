@@ -36,17 +36,23 @@ module scenes {
         private deathPlaneGeometry: CubeGeometry;
         private deathPlaneMaterial: Physijs.Material;
         private deathPlane: Physijs.Mesh;
-        
+
         //Platform
         private platformGeometry: CubeGeometry;
         private platformMaterial: Physijs.Material;
         private platform: Physijs.Mesh;
-        
+
         //Walls
         private wallHorizontalGeometry: CubeGeometry;
         private wallVerticalGeometry: CubeGeometry;
-        
+
         private wallMaterial: Physijs.Material;
+        
+        private borderWall1: Physijs.Mesh;
+        private borderWall2: Physijs.Mesh;
+        private borderWall3: Physijs.Mesh;
+        private borderWall4: Physijs.Mesh;
+        
         private wall1: Physijs.Mesh;
         private wall2: Physijs.Mesh;
         private wall3: Physijs.Mesh;
@@ -65,11 +71,11 @@ module scenes {
         private scoreValue: number;
         private timerValue: number;
         private gotoText: string;
-        
+
         private randomNum: number;
         private waitTime: boolean;
         private gameOver: boolean;
-        
+
         /**
          * @constructor
          */
@@ -108,7 +114,7 @@ module scenes {
 
             // setup canvas for menu scene
             this._setupCanvas();
-            
+
             this.coinCount = 10;
             this.prevTime = 0;
             this.waitTime = false;
@@ -155,7 +161,7 @@ module scenes {
             this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.scoreLabel);
             console.log("Added Score Label to stage");
-            
+
             // Add Location Label
             this.gotoLabel = new createjs.Text(
                 "GO TO: " + this.randomLocation(),
@@ -238,7 +244,7 @@ module scenes {
             this.playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
 
             this.player = new Physijs.BoxMesh(this.playerGeometry, this.playerMaterial, 1);
-            this.player.position.set(0, 5, 10);
+            this.player.position.set(0, 5, 0);
             this.player.receiveShadow = true;
             this.player.castShadow = true;
             this.player.name = "Player";
@@ -246,18 +252,19 @@ module scenes {
             console.log("Added Player to Scene");
         }
         
+
         /**
          * Add the Green Platform to the scene
          * 
          * @method addGreenPlatform
          * @return void
          */
-        
+
         private addGreenPlatform(): void {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 2, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
-            
+
             this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(-50, 1, 50)
             this.platform.receiveShadow = true;
@@ -265,19 +272,19 @@ module scenes {
             this.add(this.platform);
             console.log("Added Green Platform to Scene")
         }
-        
+
         /**
          * Add the Green Platform to the scene
          * 
          * @method addGreenPlatform
          * @return void
          */
-        
+
         private addBluePlatform(): void {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 2, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
-            
+
             this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(50, 1, -50)
             this.platform.receiveShadow = true;
@@ -285,19 +292,19 @@ module scenes {
             this.add(this.platform);
             console.log("Added Blue Platform to Scene")
         }
-        
+
         /**
          * Add the Green Platform to the scene
          * 
          * @method addGreenPlatform
          * @return void
          */
-        
+
         private addRedPlatform(): void {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 2, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
-            
+
             this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(50, 1, 50)
             this.platform.receiveShadow = true;
@@ -305,44 +312,156 @@ module scenes {
             this.add(this.platform);
             console.log("Added Red Platform to Scene")
         }
-        
+
         /**
          * Add wall to the scene
          * 
          * @method addWalls
          * @return void
          */
-        
-         private addWalls(): void {
-             // wall Object
-             this.wallHorizontalGeometry = new BoxGeometry(1, 1, 10);
-             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+
+        private addWalls(): void {
             
-             //wall 1
-             this.wall1 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-             this.wall1.position.set(3, 1, 0)
-             this.wall1.receiveShadow = true;
-             this.wall1.name = "wall1";
-             this.add(this.wall1);
-             console.log("Added wall 1 to Scene");
-             
-             //wall 2
-             this.wall2 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-             this.wall2.position.set(-3, 1, 0)
-             this.wall2.receiveShadow = true;
-             this.wall2.name = "wall2";
-             this.add(this.wall2);
-             console.log("Added wall 2 to Scene")
-             
-              //wall 3
-              this.wallVerticalGeometry = new BoxGeometry(15, 1, 1)
-              this.wall3 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
-              this.wall3.position.set(-4, 1, 0)
-              this.wall3.receiveShadow = true;
-              this.wall3.name = "wall3";
-              this.add(this.wall3);
-              console.log("Added wall 3 to Scene")
-         }
+            //border walls
+            //Vertical
+            this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            
+            this.borderWall1 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall1.position.set(0, 1, 64)
+            this.borderWall1.receiveShadow = true;
+            this.borderWall1.name = "borderWall1";
+            this.add(this.borderWall1);
+            console.log("Added borderWall 1 to Scene");
+            
+            this.borderWall2 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall2.position.set(0, 1, -64)
+            this.borderWall2.receiveShadow = true;
+            this.borderWall2.name = "borderWall2";
+            this.add(this.borderWall2);
+            console.log("Added borderWall 2 to Scene");
+            
+            //Horizontal
+            this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            
+            this.borderWall3 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall3.position.set(64, 1, 0)
+            this.borderWall3.receiveShadow = true;
+            this.borderWall3.name = "borderWall3";
+            this.add(this.borderWall3);
+            console.log("Added borderWall 3 to Scene");
+            
+            this.borderWall4 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall4.position.set(-64, 1, 0)
+            this.borderWall4.receiveShadow = true;
+            this.borderWall4.name = "borderWall4";
+            this.add(this.borderWall4);
+            console.log("Added borderWall 4 to Scene");
+            
+            
+            // wall Object
+            this.wallHorizontalGeometry = new BoxGeometry(1, 10, 50);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+
+            //wall 1
+            this.wall1 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.wall1.position.set(0, 1, 35)
+            this.wall1.rotation.y = 5;
+            this.wall1.receiveShadow = true;
+            this.wall1.name = "wall1";
+            this.add(this.wall1);
+            console.log("Added wall 1 to Scene");
+
+            //wall 2
+            this.wall2 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.wall2.position.set(0, 1, -35)
+            this.wall2.rotation.y = 5;
+            this.wall2.receiveShadow = true;
+            this.wall2.name = "wall2";
+            this.add(this.wall2);
+            console.log("Added wall 2 to Scene");
+
+            //wall 3
+            this.wallVerticalGeometry = new BoxGeometry(50, 10, 1)
+            this.wall3 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall3.position.set(35, 1, 0)
+            this.wall3.rotation.y = 5;
+            this.wall3.receiveShadow = true;
+            this.wall3.name = "wall3";
+            this.add(this.wall3);
+            console.log("Added wall 3 to Scene");
+
+            //wall 4
+            this.wall4 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall4.position.set(-35, 1, 0)
+            this.wall4.rotation.y = 5;
+            this.wall4.receiveShadow = true;
+            this.wall4.name = "wall4";
+            this.add(this.wall4);
+            console.log("Added wall 4 to Scene");
+            
+            //wall 5
+            this.wall5 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall5.position.set(50, 1, 20)
+            this.wall5.rotation.x = 5;
+            this.wall5.receiveShadow = true;
+            this.wall5.name = "wall4";
+            this.add(this.wall4);
+            console.log("Added wall 4 to Scene");
+        }
+        
+        /**
+         * Add the Green Platform to the scene
+         * 
+         * @method addGreenPlatform
+         * @return void
+         */
+
+        private addObstaclePlatform(): void {
+            // Platform Object
+            this.platformGeometry = new BoxGeometry(10, 1, 20);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(35, 1, -15)
+            this.platform.rotation.x = 10;
+            this.platform.receiveShadow = true;
+            this.platform.name = "ObstaclePlatform";
+            this.add(this.platform);
+            console.log("Added Obstacle Platform to Scene");
+            
+            this.platformGeometry = new BoxGeometry(10, 1, 5);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(35, 5, 0)
+            this.platform.receiveShadow = true;
+            this.platform.name = "ObstaclePlatform";
+            this.add(this.platform);
+            console.log("Added Obstacle Platform to Scene");
+            
+            this.platformGeometry = new BoxGeometry(10, 1, 5);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(35, 3, 10)
+            this.platform.receiveShadow = true;
+            this.platform.name = "ObstaclePlatform";
+            this.add(this.platform);
+            console.log("Added Obstacle Platform to Scene");
+            
+            this.platformGeometry = new BoxGeometry(10, 1, 5);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+
+            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform.position.set(35, 1, 15)
+            this.platform.receiveShadow = true;
+            this.platform.name = "ObstaclePlatform";
+            this.add(this.platform);
+            console.log("Added Obstacle Platform to Scene");
+            
+        }
 
         /**
          * Add the death plane to the scene
@@ -510,8 +629,8 @@ module scenes {
                 this.player.setAngularVelocity(new Vector3(0, 0, 0));
             }
         }
-        
-        private reduceTimer(): void{
+
+        private reduceTimer(): void {
             var self = this;
             if (!this.waitTime) {
                 this.waitTime = true;
@@ -521,7 +640,7 @@ module scenes {
                 }, 1000);
             }
         }
-        
+
         private randomLocation(): string {
             this.randomNum = Math.floor(Math.random() * 3);
             console.log(this.randomNum);
@@ -563,10 +682,10 @@ module scenes {
          * @return void
          */
         public start(): void {
-            
+
             // Set random location at start
             this.randomLocation();
-            
+
             // Set Up Scoreboard
             this.setupScoreboard();
 
@@ -614,18 +733,21 @@ module scenes {
 
             // Add player controller
             this.addPlayer();
-            
+
             //Add green platform
             this.addGreenPlatform();
-            
+
             //Add blue platform
             this.addBluePlatform();
-            
+
             //Add red platform
             this.addRedPlatform();
-            
+
             //Add walls
             this.addWalls();
+            
+            //Add Obstacles
+            this.addObstaclePlatform();
 
             // Add custom coin imported from Blender
             this.addCoinMesh();
@@ -648,16 +770,16 @@ module scenes {
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
 
                 }
-                
-                if(eventObject.name === "GreenPlatform"){
+
+                if (eventObject.name === "GreenPlatform") {
                     this.gotoLabel.text = "Go TO: " + this.randomLocation();
                 }
-                
-                if(eventObject.name === "BluePlatform"){
+
+                if (eventObject.name === "BluePlatform") {
                     this.gotoLabel.text = "Go TO: " + this.randomLocation();
                 }
-                
-                if(eventObject.name === "RedPlatform"){
+
+                if (eventObject.name === "RedPlatform") {
                     this.gotoLabel.text = "Go TO: " + this.randomLocation();
                 }
 
@@ -697,9 +819,9 @@ module scenes {
          * @returns void
          */
         public update(): void {
-            
+
             if (this.gameOver == true) {
-                document.exitPointerLock(); 
+                document.exitPointerLock();
                 this.children = [];
                 this.player.remove(camera);
                 currentScene = config.Scene.OVER;
