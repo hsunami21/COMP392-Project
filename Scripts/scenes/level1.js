@@ -172,7 +172,7 @@ var scenes;
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 2, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(-50, 1, 50);
             this.platform.receiveShadow = true;
             this.platform.name = "GreenPlatform";
@@ -189,7 +189,7 @@ var scenes;
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 2, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(50, 1, -50);
             this.platform.receiveShadow = true;
             this.platform.name = "BluePlatform";
@@ -206,7 +206,7 @@ var scenes;
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 2, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(50, 1, 50);
             this.platform.receiveShadow = true;
             this.platform.name = "RedPlatform";
@@ -224,13 +224,13 @@ var scenes;
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-            this.borderWall1 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall1.position.set(0, 1, 64);
             this.borderWall1.receiveShadow = true;
             this.borderWall1.name = "borderWall1";
             this.add(this.borderWall1);
             console.log("Added borderWall 1 to Scene");
-            this.borderWall2 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall2.position.set(0, 1, -64);
             this.borderWall2.receiveShadow = true;
             this.borderWall2.name = "borderWall2";
@@ -239,13 +239,13 @@ var scenes;
             //Horizontal
             this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-            this.borderWall3 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall3 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall3.position.set(64, 1, 0);
             this.borderWall3.receiveShadow = true;
             this.borderWall3.name = "borderWall3";
             this.add(this.borderWall3);
             console.log("Added borderWall 3 to Scene");
-            this.borderWall4 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.borderWall4 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall4.position.set(-64, 1, 0);
             this.borderWall4.receiveShadow = true;
             this.borderWall4.name = "borderWall4";
@@ -255,7 +255,7 @@ var scenes;
             this.wallHorizontalGeometry = new BoxGeometry(1, 10, 50);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
             //wall 1
-            this.wall1 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.wall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.wall1.position.set(0, 1, 35);
             this.wall1.rotation.y = 5;
             this.wall1.receiveShadow = true;
@@ -263,7 +263,7 @@ var scenes;
             this.add(this.wall1);
             console.log("Added wall 1 to Scene");
             //wall 2
-            this.wall2 = new Physijs.ConvexMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
+            this.wall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.wall2.position.set(0, 1, -35);
             this.wall2.rotation.y = 5;
             this.wall2.receiveShadow = true;
@@ -272,7 +272,7 @@ var scenes;
             console.log("Added wall 2 to Scene");
             //wall 3
             this.wallVerticalGeometry = new BoxGeometry(50, 10, 1);
-            this.wall3 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall3 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.wall3.position.set(35, 1, 0);
             this.wall3.rotation.y = 5;
             this.wall3.receiveShadow = true;
@@ -280,7 +280,7 @@ var scenes;
             this.add(this.wall3);
             console.log("Added wall 3 to Scene");
             //wall 4
-            this.wall4 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall4 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.wall4.position.set(-35, 1, 0);
             this.wall4.rotation.y = 5;
             this.wall4.receiveShadow = true;
@@ -288,7 +288,7 @@ var scenes;
             this.add(this.wall4);
             console.log("Added wall 4 to Scene");
             //wall 5
-            this.wall5 = new Physijs.ConvexMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
+            this.wall5 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.wall5.position.set(50, 1, 20);
             this.wall5.rotation.x = 5;
             this.wall5.receiveShadow = true;
@@ -306,7 +306,7 @@ var scenes;
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 20);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(35, 1, -15);
             this.platform.rotation.x = 10;
             this.platform.receiveShadow = true;
@@ -315,7 +315,7 @@ var scenes;
             console.log("Added Obstacle Platform to Scene");
             this.platformGeometry = new BoxGeometry(10, 1, 5);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(35, 5, 0);
             this.platform.receiveShadow = true;
             this.platform.name = "ObstaclePlatform";
@@ -323,7 +323,7 @@ var scenes;
             console.log("Added Obstacle Platform to Scene");
             this.platformGeometry = new BoxGeometry(10, 1, 5);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(35, 3, 10);
             this.platform.receiveShadow = true;
             this.platform.name = "ObstaclePlatform";
@@ -331,7 +331,7 @@ var scenes;
             console.log("Added Obstacle Platform to Scene");
             this.platformGeometry = new BoxGeometry(10, 1, 5);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-            this.platform = new Physijs.ConvexMesh(this.platformGeometry, this.platformMaterial, 0);
+            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             this.platform.position.set(35, 1, 15);
             this.platform.receiveShadow = true;
             this.platform.name = "ObstaclePlatform";
@@ -441,13 +441,20 @@ var scenes;
          */
         Level1.prototype.checkControls = function () {
             if (this.keyboardControls.enabled) {
+                this.timerLabel.text = "TIME: " + this.timerValue;
+                if (this.timerValue >= 0) {
+                    this.reduceTimer();
+                }
+                else {
+                    this.gameOver = true;
+                }
                 this.velocity = new Vector3();
                 var time = performance.now();
                 var delta = (time - this.prevTime) / 1000;
                 if (this.isGrounded) {
                     var direction = new Vector3(0, 0, 0);
                     if (this.keyboardControls.moveForward) {
-                        this.velocity.z -= 400.0 * delta;
+                        this.velocity.z -= 1000.0 * delta;
                     }
                     if (this.keyboardControls.moveLeft) {
                         this.velocity.x -= 400.0 * delta;
@@ -460,7 +467,7 @@ var scenes;
                     }
                     if (this.keyboardControls.jump) {
                         this.velocity.y += 4000.0 * delta;
-                        if (this.player.position.y > 4) {
+                        if (this.player.position.y > 6) {
                             this.isGrounded = false;
                             createjs.Sound.play("jump");
                         }
@@ -596,16 +603,24 @@ var scenes;
                     this.setCoinPosition(eventObject);
                     this.scoreValue += 100;
                     this.scoreLabel.text = "SCORE: " + this.scoreValue;
+                }
+                if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
-                if (eventObject.name === "GreenPlatform") {
-                    this.gotoLabel.text = "Go TO: " + this.randomLocation();
+                else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
+                    this.timerValue += -10;
                 }
-                if (eventObject.name === "BluePlatform") {
-                    this.gotoLabel.text = "Go TO: " + this.randomLocation();
+                if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
+                    this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
-                if (eventObject.name === "RedPlatform") {
-                    this.gotoLabel.text = "Go TO: " + this.randomLocation();
+                else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
+                    this.timerValue += -10;
+                }
+                if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
+                    this.gotoLabel.text = "GO TO: " + this.randomLocation();
+                }
+                else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
+                    this.timerValue += -10;
                 }
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
@@ -643,13 +658,6 @@ var scenes;
                 this.player.remove(camera);
                 currentScene = config.Scene.OVER;
                 changeScene();
-            }
-            this.timerLabel.text = "TIME: " + this.timerValue;
-            if (this.timerValue >= 0) {
-                this.reduceTimer();
-            }
-            else {
-                this.gameOver = true;
             }
             this.coins.forEach(function (coin) {
                 coin.setAngularFactor(new Vector3(0, 0, 0));
