@@ -77,6 +77,7 @@ module scenes {
         private gotoText: string;
 
         private randomNum: number;
+        private waitStart: boolean;
         private waitTime: boolean;
         private gameOver: boolean;
 
@@ -122,6 +123,7 @@ module scenes {
             this.coinCount = 10;
             this.prevTime = 0;
             this.waitTime = false;
+            this.waitStart = true;
 
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
@@ -142,11 +144,11 @@ module scenes {
         private setupScoreboard(): void {
             // initialize  score and lives values
             this.scoreValue = 0;
-            this.timerValue = 60;
+            this.timerValue = 30.0;
 
             // Add Lives Label
             this.timerLabel = new createjs.Text(
-                "TIME: " + this.timerValue,
+                "TIME: " + this.timerValue.toFixed(1),
                 "40px Consolas",
                 "#ffffff"
             );
@@ -552,7 +554,7 @@ module scenes {
         private checkControls(): void {
             if (this.keyboardControls.enabled) {
                 
-                this.timerLabel.text = "TIME: " + this.timerValue;
+                this.timerLabel.text = "TIME: " + this.timerValue.toFixed(1);
 
                 if (this.timerValue >= 0) {
                     this.reduceTimer();
@@ -618,9 +620,9 @@ module scenes {
             if (!this.waitTime) {
                 this.waitTime = true;
                 setTimeout(function() {
-                    self.timerValue += -1;
+                    self.timerValue += -0.1;
                     self.waitTime = false;
-                }, 1000);
+                }, 100);
             }
         }
 
@@ -654,6 +656,20 @@ module scenes {
                     break;
             }
             return this.gotoText;
+        }
+        
+        private showLevel(): void {
+            var self = this;
+            camera.position.set(0, 250, 0);
+            camera.lookAt(new Vector3(0, 0, 0));
+
+            setTimeout(function() {
+                self.waitStart = false;
+                // create parent-child relationship with camera and player
+                self.player.add(camera);
+                camera.position.set(0, 1, 0);
+                camera.rotation.z = 2 * Math.PI;
+            }, 5000);
         }
 
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
@@ -753,6 +769,7 @@ module scenes {
                 }
 
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
+                    this.timerValue = 30;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
@@ -760,6 +777,7 @@ module scenes {
                 }
 
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
+                    this.timerValue = 30;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
@@ -767,6 +785,7 @@ module scenes {
                 }
 
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
+                    this.timerValue = 30;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
@@ -781,9 +800,7 @@ module scenes {
                 }
             }.bind(this));
 
-            // create parent-child relationship with camera and player
-            this.player.add(camera);
-            camera.position.set(0, 1, 0);
+            
 
             this.simulate();
         }
@@ -809,21 +826,27 @@ module scenes {
          * @returns void
          */
         public update(): void {
-
-            if (this.gameOver == true) {
-                document.exitPointerLock();
-                this.children = [];
-                this.player.remove(camera);
-                currentScene = config.Scene.OVER;
-                changeScene();
+            if (this.waitStart == true) {
+                this.showLevel();
             }
+            else {
+                if (this.gameOver == true) {
+                    document.exitPointerLock();
+                    this.children = [];
+                    this.player.remove(camera);
+                    currentScene = config.Scene.OVER;
+                    changeScene();
+                }
 
-            this.coins.forEach(coin => {
-                coin.setAngularFactor(new Vector3(0, 0, 0));
-                coin.setAngularVelocity(new Vector3(0, 1, 0));
-            });
+                this.coins.forEach(coin => {
+                    coin.setAngularFactor(new Vector3(0, 0, 0));
+                    coin.setAngularVelocity(new Vector3(0, 1, 0));
+                });
 
-            this.checkControls();
+                this.checkControls();
+            }
+            
+            
             this.stage.update();
             this.simulate();
         }
