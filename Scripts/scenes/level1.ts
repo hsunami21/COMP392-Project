@@ -59,6 +59,10 @@ module scenes {
         private wall4: Physijs.Mesh;
         private wall5: Physijs.Mesh;
         private wall6: Physijs.Mesh;
+        private wall7: Physijs.Mesh;
+        private wall8: Physijs.Mesh;
+        private wall9: Physijs.Mesh;
+        
 
         private velocity: Vector3;
         private prevTime: number;
@@ -325,17 +329,17 @@ module scenes {
             //border walls
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
             
             this.borderWall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-            this.borderWall1.position.set(0, 1, 64)
+            this.borderWall1.position.set(0, 1, 64);
             this.borderWall1.receiveShadow = true;
             this.borderWall1.name = "borderWall1";
             this.add(this.borderWall1);
             console.log("Added borderWall 1 to Scene");
             
             this.borderWall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-            this.borderWall2.position.set(0, 1, -64)
+            this.borderWall2.position.set(0, 1, -64);
             this.borderWall2.receiveShadow = true;
             this.borderWall2.name = "borderWall2";
             this.add(this.borderWall2);
@@ -343,17 +347,17 @@ module scenes {
             
             //Horizontal
             this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
             
             this.borderWall3 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-            this.borderWall3.position.set(64, 1, 0)
+            this.borderWall3.position.set(64, 1, 0);
             this.borderWall3.receiveShadow = true;
             this.borderWall3.name = "borderWall3";
             this.add(this.borderWall3);
             console.log("Added borderWall 3 to Scene");
             
             this.borderWall4 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-            this.borderWall4.position.set(-64, 1, 0)
+            this.borderWall4.position.set(-64, 1, 0);
             this.borderWall4.receiveShadow = true;
             this.borderWall4.name = "borderWall4";
             this.add(this.borderWall4);
@@ -366,8 +370,7 @@ module scenes {
 
             //wall 1
             this.wall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-            this.wall1.position.set(0, 1, 35)
-            this.wall1.rotation.y = 5;
+            this.wall1.position.set(0, 1, 35);
             this.wall1.receiveShadow = true;
             this.wall1.name = "wall1";
             this.add(this.wall1);
@@ -375,44 +378,45 @@ module scenes {
 
             //wall 2
             this.wall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
-            this.wall2.position.set(0, 1, -35)
-            this.wall2.rotation.y = 5;
+            this.wall2.position.set(0, 1, -35);
             this.wall2.receiveShadow = true;
             this.wall2.name = "wall2";
             this.add(this.wall2);
             console.log("Added wall 2 to Scene");
 
             //wall 3
-            this.wallVerticalGeometry = new BoxGeometry(50, 10, 1)
+            this.wallVerticalGeometry = new BoxGeometry(45, 10, 1);
             this.wall3 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
-            this.wall3.position.set(35, 1, 0)
-            this.wall3.rotation.y = 5;
+            this.wall3.position.set(50, 1, 0);
             this.wall3.receiveShadow = true;
             this.wall3.name = "wall3";
             this.add(this.wall3);
             console.log("Added wall 3 to Scene");
 
             //wall 4
+            this.wallVerticalGeometry = new BoxGeometry(50, 10, 1);
             this.wall4 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
-            this.wall4.position.set(-35, 1, 0)
-            this.wall4.rotation.y = 5;
+            this.wall4.position.set(-35, 1, 0);
             this.wall4.receiveShadow = true;
             this.wall4.name = "wall4";
             this.add(this.wall4);
             console.log("Added wall 4 to Scene");
             
             //wall 5
+            this.wallVerticalGeometry = new BoxGeometry(1, 10, 64);
             this.wall5 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
-            this.wall5.position.set(50, 1, 20)
-            this.wall5.rotation.x = 5;
+            this.wall5.position.set(5, 1, 0);
             this.wall5.receiveShadow = true;
-            this.wall5.name = "wall4";
-            this.add(this.wall4);
-            console.log("Added wall 4 to Scene");
+            this.wall5.name = "wall5";
+            this.add(this.wall5);
+            console.log("Added wall 5 to Scene");
+            
+            
+           
         }
         
         /**
-         * Add the Green Platform to the scene
+         * Add the Obstacle Platform to the scene
          * 
          * @method addGreenPlatform
          * @return void
@@ -420,47 +424,16 @@ module scenes {
 
         private addObstaclePlatform(): void {
             // Platform Object
-            this.platformGeometry = new BoxGeometry(10, 1, 20);
-            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.platformGeometry = new BoxGeometry(10, 1, 40);
+            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
 
             this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(35, 1, -15)
-            this.platform.rotation.x = 10;
+            this.platform.position.set(35, 1, -15);
             this.platform.receiveShadow = true;
             this.platform.name = "ObstaclePlatform";
             this.add(this.platform);
             console.log("Added Obstacle Platform to Scene");
-            
-            this.platformGeometry = new BoxGeometry(10, 1, 5);
-            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-
-            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(35, 5, 0)
-            this.platform.receiveShadow = true;
-            this.platform.name = "ObstaclePlatform";
-            this.add(this.platform);
-            console.log("Added Obstacle Platform to Scene");
-            
-            this.platformGeometry = new BoxGeometry(10, 1, 5);
-            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-
-            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(35, 3, 10)
-            this.platform.receiveShadow = true;
-            this.platform.name = "ObstaclePlatform";
-            this.add(this.platform);
-            console.log("Added Obstacle Platform to Scene");
-            
-            this.platformGeometry = new BoxGeometry(10, 1, 5);
-            this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
-
-            this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(35, 1, 15)
-            this.platform.receiveShadow = true;
-            this.platform.name = "ObstaclePlatform";
-            this.add(this.platform);
-            console.log("Added Obstacle Platform to Scene");
-            
+      
         }
 
         /**
