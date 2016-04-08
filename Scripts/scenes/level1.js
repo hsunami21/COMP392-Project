@@ -55,6 +55,7 @@ var scenes;
             this.prevTime = 0;
             this.waitTime = false;
             this.waitStart = true;
+            this.locationsLeft = 1;
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
             // setup a THREE.JS Clock object
@@ -484,6 +485,7 @@ var scenes;
          */
         Level1.prototype.checkControls = function () {
             if (this.keyboardControls.enabled) {
+                this.scoreLabel.text = "SCORE: " + this.scoreValue;
                 this.timerLabel.text = "TIME: " + this.timerValue.toFixed(1);
                 if (this.timerValue >= 0) {
                     this.reduceTimer();
@@ -497,19 +499,19 @@ var scenes;
                 if (this.isGrounded) {
                     var direction = new Vector3(0, 0, 0);
                     if (this.keyboardControls.moveForward) {
-                        this.velocity.z -= 1000.0 * delta;
+                        this.velocity.z -= 500.0 * delta;
                     }
                     if (this.keyboardControls.moveLeft) {
-                        this.velocity.x -= 400.0 * delta;
+                        this.velocity.x -= 500.0 * delta;
                     }
                     if (this.keyboardControls.moveBackward) {
-                        this.velocity.z += 400.0 * delta;
+                        this.velocity.z += 500.0 * delta;
                     }
                     if (this.keyboardControls.moveRight) {
-                        this.velocity.x += 400.0 * delta;
+                        this.velocity.x += 500.0 * delta;
                     }
                     if (this.keyboardControls.jump) {
-                        this.velocity.y += 4000.0 * delta;
+                        this.velocity.y += 5000.0 * delta;
                         if (this.player.position.y > 6) {
                             this.isGrounded = false;
                             createjs.Sound.play("jump");
@@ -663,6 +665,8 @@ var scenes;
                 }
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.timerValue = 30;
+                    this.scoreValue += 100;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
@@ -670,6 +674,8 @@ var scenes;
                 }
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
                     this.timerValue = 30;
+                    this.scoreValue += 100;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
@@ -677,6 +683,8 @@ var scenes;
                 }
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
                     this.timerValue = 30;
+                    this.scoreValue += 100;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
@@ -734,6 +742,9 @@ var scenes;
                     this.player.remove(camera);
                     currentScene = config.Scene.OVER;
                     changeScene();
+                }
+                if (this.locationsLeft == 0) {
+                    this.gameOver = true;
                 }
                 //  this.coins.forEach(coin => {
                 //      coin.setAngularFactor(new Vector3(0, 0, 0));
