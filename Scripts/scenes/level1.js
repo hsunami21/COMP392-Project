@@ -345,7 +345,7 @@ var scenes;
             this.add(this.wall11);
             console.log("Added wall 11 to Scene");
             //wall 12
-            this.wallVerticalGeometry = new BoxGeometry(1, 2, 30);
+            this.wallVerticalGeometry = new BoxGeometry(1, 7, 30);
             this.wall12 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.wall12.position.set(-53, 1, -40);
             this.wall12.receiveShadow = true;
@@ -362,7 +362,7 @@ var scenes;
         Level1.prototype.addTeleportalWalls = function () {
             // Teleportal Object          
             //blue teleportal wall
-            this.wallVerticalGeometry = new BoxGeometry(1, 10, 5);
+            this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
             this.blueTeleportWall = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.blueTeleportWall.position.set(-60, 1, -50);
@@ -371,7 +371,7 @@ var scenes;
             this.add(this.blueTeleportWall);
             console.log("Added teleportWall2 to Scene");
             //red teleportal wall
-            this.wallVerticalGeometry = new BoxGeometry(1, 10, 5);
+            this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
             this.redTeleportWall = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.redTeleportWall.position.set(-60, 1, -40);
@@ -380,7 +380,7 @@ var scenes;
             this.add(this.redTeleportWall);
             console.log("Added redTeleportWall to Scene");
             //green teleportal wall
-            this.wallVerticalGeometry = new BoxGeometry(1, 10, 5);
+            this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
             this.greenTeleportWall = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.greenTeleportWall.position.set(-60, 1, -30);
@@ -523,20 +523,20 @@ var scenes;
                 if (this.isGrounded) {
                     var direction = new Vector3(0, 0, 0);
                     if (this.keyboardControls.moveForward) {
-                        this.velocity.z -= 500.0 * delta;
+                        this.velocity.z -= 700.0 * delta;
                     }
                     if (this.keyboardControls.moveLeft) {
-                        this.velocity.x -= 500.0 * delta;
+                        this.velocity.x -= 700.0 * delta;
                     }
                     if (this.keyboardControls.moveBackward) {
-                        this.velocity.z += 500.0 * delta;
+                        this.velocity.z += 700.0 * delta;
                     }
                     if (this.keyboardControls.moveRight) {
-                        this.velocity.x += 500.0 * delta;
+                        this.velocity.x += 700.0 * delta;
                     }
                     if (this.keyboardControls.jump) {
-                        this.velocity.y += 5000.0 * delta;
-                        if (this.player.position.y > 6) {
+                        this.velocity.y += 7000.0 * delta;
+                        if (this.player.position.y > 8) {
                             this.isGrounded = false;
                             createjs.Sound.play("jump");
                         }
@@ -767,7 +767,7 @@ var scenes;
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 2) {
+                if (this.locationsLeft == 6) {
                     this.gameOver = true;
                 }
                 //  this.coins.forEach(coin => {
