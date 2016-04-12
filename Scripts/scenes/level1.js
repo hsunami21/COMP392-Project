@@ -23,6 +23,8 @@ var scenes;
          */
         function Level1() {
             _super.call(this);
+            this.showTime = 5;
+            this.showTimer = 0;
             this._initialize();
             this.start();
         }
@@ -53,6 +55,7 @@ var scenes;
             this._setupCanvas();
             this.coinCount = 10;
             this.prevTime = 0;
+            this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
             this.locationsLeft = 0;
@@ -601,17 +604,22 @@ var scenes;
             }
             return this.gotoText;
         };
-        Level1.prototype.showLevel = function () {
+        Level1.prototype.showLevel = function (timer) {
             var self = this;
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
-            setTimeout(function () {
+            console.log("BEFORE: " + camera.rotation);
+            self.showTimer += timer;
+            console.log(timer);
+            if (self.showTimer > this.showTime) {
                 self.waitStart = false;
                 // create parent-child relationship with camera and player
-                self.player.add(camera);
                 camera.position.set(0, 1, 0);
                 camera.rotation.z = 2 * Math.PI;
-            }, 5000);
+                camera.rotation.set(0, 0, 0);
+                console.log("AFTER: " + camera.rotation);
+                self.player.add(camera);
+            }
         };
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
         /**
@@ -756,8 +764,11 @@ var scenes;
          * @returns void
          */
         Level1.prototype.update = function () {
+            var time2 = performance.now();
+            var delta = (time2 - this.prevUpdateTime) / 1000;
+            console.log(delta);
             if (this.waitStart == true) {
-                this.showLevel();
+                this.showLevel(delta);
             }
             else {
                 if (this.gameOver == true) {
@@ -776,6 +787,7 @@ var scenes;
                 //  });
                 this.checkControls();
             }
+            this.prevUpdateTime = time2;
             this.stage.update();
             this.simulate();
         };
@@ -796,7 +808,7 @@ var scenes;
             this.stage.update();
         };
         return Level1;
-    })(scenes.Scene);
+    }(scenes.Scene));
     scenes.Level1 = Level1;
 })(scenes || (scenes = {}));
 //# sourceMappingURL=level1.js.map

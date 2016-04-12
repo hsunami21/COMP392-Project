@@ -75,6 +75,7 @@ module scenes {
 
         private velocity: Vector3;
         private prevTime: number;
+        private prevUpdateTime: number;
         private clock: Clock;
 
         private stage: createjs.Stage;
@@ -90,6 +91,9 @@ module scenes {
         private waitStart: boolean;
         private waitTime: boolean;
         private gameOver: boolean;
+        
+        private showTime: number = 5;
+        private showTimer: number = 0;
 
         /**
          * @constructor
@@ -132,6 +136,7 @@ module scenes {
 
             this.coinCount = 10;
             this.prevTime = 0;
+            this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
             this.locationsLeft = 0;
@@ -681,7 +686,7 @@ module scenes {
                 this.velocity = new Vector3();
 
                 var time: number = performance.now();
-                var delta: number = (time - this.prevTime) / 1000;
+                var delta = (time - this.prevTime) / 1000;
 
                 if (this.isGrounded) {
                     var direction = new Vector3(0, 0, 0);
@@ -773,18 +778,24 @@ module scenes {
             return this.gotoText;
         }
         
-        private showLevel(): void {
+        private showLevel(timer:number): void {
             var self = this;
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
-
-            setTimeout(function() {
+            console.log("BEFORE: " + camera.rotation);
+            
+            self.showTimer += timer;
+            if (self.showTimer > this.showTime)
+            {
                 self.waitStart = false;
                 // create parent-child relationship with camera and player
-                self.player.add(camera);
                 camera.position.set(0, 1, 0);
                 camera.rotation.z = 2 * Math.PI;
-            }, 5000);
+                camera.rotation.set(0, 0, 0);
+                console.log("AFTER: " + camera.rotation);
+                self.player.add(camera);
+                self.showTimer = 0;
+            }
         }
 
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
@@ -968,8 +979,12 @@ module scenes {
          * @returns void
          */
         public update(): void {
+            
+            var time2: number = performance.now();
+            var delta = (time2 - this.prevUpdateTime) / 1000;
+            
             if (this.waitStart == true) {
-                this.showLevel();
+                this.showLevel(delta);
             }
             else {
                 if (this.gameOver == true) {
@@ -992,7 +1007,7 @@ module scenes {
                 this.checkControls();
             }
             
-            
+            this.prevUpdateTime = time2;
             this.stage.update();
             this.simulate();
         }

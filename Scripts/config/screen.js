@@ -7,7 +7,7 @@ var config;
         Screen.HEIGHT = window.innerHeight;
         Screen.RATIO = window.innerWidth / window.innerHeight;
         return Screen;
-    })();
+    }());
     config.Screen = Screen;
     // Scene Constants
     var Scene = (function () {
@@ -20,7 +20,7 @@ var config;
         Scene.OVER = 4;
         Scene.INSTRUCTIONS = 5;
         return Scene;
-    })();
+    }());
     config.Scene = Scene;
 })(config || (config = {}));
 //# sourceMappingURL=screen.js.map
