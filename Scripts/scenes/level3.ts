@@ -1,108 +1,208 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 /**
  * The Scenes module is a namespace to reference all scene objects
- *
+ * 
  * @module scenes
  */
-var scenes;
-(function (scenes) {
+module scenes {
     /**
      * The Level1 class is where the main action occurs for the game
-     *
+     * 
      * @class Level1
      * @param havePointerLock {boolean}
      */
-    var Level1 = (function (_super) {
-        __extends(Level1, _super);
+    export class Level3 extends scenes.Scene {
+        private havePointerLock: boolean;
+        private element: any;
+
+        private blocker: HTMLElement;
+        private instructions: HTMLElement;
+        private spotLight: SpotLight;
+        private groundGeometry: CubeGeometry;
+        private groundPhysicsMaterial: Physijs.Material;
+        private groundMaterial: PhongMaterial;
+        private ground: Physijs.Mesh;
+        private groundTexture: Texture;
+        private groundTextureNormal: Texture;
+        private playerGeometry: CubeGeometry;
+        private playerMaterial: Physijs.Material;
+        private player: Physijs.Mesh;
+        private keyboardControls: objects.KeyboardControls;
+        private mouseControls: objects.MouseControls;
+        private isGrounded: boolean;
+        private coinGeometry: Geometry;
+        private coinMaterial: Physijs.Material;
+        private coins: Physijs.ConcaveMesh[];
+        private coinCount: number;
+        private deathPlaneGeometry: CubeGeometry;
+        private deathPlaneMaterial: Physijs.Material;
+        private deathPlane: Physijs.Mesh;
+
+        //Platform
+        private platformGeometry: CubeGeometry;
+        private platformMaterial: Physijs.Material;
+        private platform: Physijs.Mesh;
+
+        //Walls
+        private wallHorizontalGeometry: CubeGeometry;
+        private wallVerticalGeometry: CubeGeometry;
+
+        private wallMaterial: Physijs.Material;
+        
+        private borderWall1: Physijs.Mesh;
+        private borderWall2: Physijs.Mesh;
+        private borderWall3: Physijs.Mesh;
+        private borderWall4: Physijs.Mesh;
+        //normal walls
+        private wall1: Physijs.Mesh;
+        private wall2: Physijs.Mesh;
+        private wall3: Physijs.Mesh;
+        private wall4: Physijs.Mesh;
+        private wall5: Physijs.Mesh;
+        private wall6: Physijs.Mesh;
+        private wall7: Physijs.Mesh;
+        private wall8: Physijs.Mesh;
+        private wall9: Physijs.Mesh;
+        private wall10: Physijs.Mesh;
+        private wall11: Physijs.Mesh;
+        private wall12: Physijs.Mesh;
+        
+        
+        //teleport walls
+        private blueTeleportWall: Physijs.Mesh;
+        private greenTeleportWall: Physijs.Mesh;
+        private redTeleportWall: Physijs.Mesh;
+        
+
+        private velocity: Vector3;
+        private prevTime: number;
+        private prevUpdateTime: number;
+        private clock: Clock;
+
+        private stage: createjs.Stage;
+        private scoreLabel: createjs.Text;
+        private timerLabel: createjs.Text;
+        private gotoLabel: createjs.Text;
+        private scoreValue: number;
+        private timerValue: number;
+        private gotoText: string;
+
+        private randomNum: number;
+        private locationsLeft: number;
+        private waitStart: boolean;
+        private waitTime: boolean;
+        private gameOver: boolean;
+        
+        private showTime: number = 5;
+        private showTimer: number = 0;
+
         /**
          * @constructor
          */
-        function Level1() {
-            _super.call(this);
-            this.showTime = 5;
-            this.showTimer = 0;
+        constructor() {
+            super();
+
             this._initialize();
             this.start();
         }
+
         // PRIVATE METHODS ++++++++++++++++++++++++++++++++++++++++++
+
         /**
          * Sets up the initial canvas for the play scene
-         *
+         * 
          * @method setupCanvas
          * @return void
          */
-        Level1.prototype._setupCanvas = function () {
+        private _setupCanvas(): void {
             canvas.setAttribute("width", config.Screen.WIDTH.toString());
             canvas.setAttribute("height", (config.Screen.HEIGHT * 0.1).toString());
             canvas.style.backgroundColor = "#000000";
-        };
+        }
+
         /**
          * The initialize method sets up key objects to be used in the scene
-         *
+         * 
          * @method _initialize
          * @returns void
          */
-        Level1.prototype._initialize = function () {
+        private _initialize(): void {
             // Create to HTMLElements
             this.blocker = document.getElementById("blocker");
             this.instructions = document.getElementById("instructions");
             this.blocker.style.display = "block";
+
             // setup canvas for menu scene
             this._setupCanvas();
+
             this.coinCount = 10;
             this.prevTime = 0;
             this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
             this.locationsLeft = 0;
+
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
+
             // setup a THREE.JS Clock object
             this.clock = new Clock();
+
             // Instantiate Game Controls
             this.keyboardControls = new objects.KeyboardControls();
             this.mouseControls = new objects.MouseControls();
-        };
+        }
         /**
          * This method sets up the scoreboard for the scene
-         *
+         * 
          * @method setupScoreboard
          * @returns void
          */
-        Level1.prototype.setupScoreboard = function () {
+        private setupScoreboard(): void {
             // initialize  score and lives values
             this.scoreValue = 0;
             this.timerValue = 30.0;
+
             // Add Lives Label
-            this.timerLabel = new createjs.Text("TIME: " + this.timerValue.toFixed(1), "40px Consolas", "#ffffff");
+            this.timerLabel = new createjs.Text(
+                "TIME: " + this.timerValue.toFixed(1),
+                "40px Consolas",
+                "#ffffff"
+            );
             this.timerLabel.x = config.Screen.WIDTH * 0.4;
             this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.timerLabel);
             console.log("Added Lives Label to stage");
+
             // Add Score Label
-            this.scoreLabel = new createjs.Text("SCORE: " + this.scoreValue, "40px Consolas", "#ffffff");
+            this.scoreLabel = new createjs.Text(
+                "SCORE: " + this.scoreValue,
+                "40px Consolas",
+                "#ffffff"
+            );
             this.scoreLabel.x = config.Screen.WIDTH * 0.1;
             this.scoreLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.scoreLabel);
             console.log("Added Score Label to stage");
+
             // Add Location Label
-            this.gotoLabel = new createjs.Text("GO TO: " + this.randomLocation(), "40px Consolas", "#ffffff");
+            this.gotoLabel = new createjs.Text(
+                "GO TO: " + this.randomLocation(),
+                "40px Consolas",
+                "#ffffff"
+            );
             this.gotoLabel.x = config.Screen.WIDTH * 0.65;
             this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.addChild(this.gotoLabel);
             console.log("Added Location Label to stage");
-        };
+        }
+
         /**
          * Add a spotLight to the scene
-         *
+         * 
          * @method addSpotLight
          * @return void
          */
-        Level1.prototype.addSpotLight = function () {
+        private addSpotLight(): void {
             // Spot Light
             this.spotLight = new SpotLight(0xffffff);
             this.spotLight.position.set(20, 128, -15);
@@ -121,26 +221,30 @@ var scenes;
             this.spotLight.name = "Spot Light";
             this.add(this.spotLight);
             console.log("Added spotLight to scene");
-        };
+        }
+
         /**
          * Add a ground plane to the scene
-         *
+         * 
          * @method addGround
          * @return void
          */
-        Level1.prototype.addGround = function () {
+        private addGround(): void {
             this.groundTexture = new THREE.TextureLoader().load('../../Assets/images/GravelCobble.jpg');
             this.groundTexture.wrapS = THREE.RepeatWrapping;
             this.groundTexture.wrapT = THREE.RepeatWrapping;
             this.groundTexture.repeat.set(8, 8);
+
             this.groundTextureNormal = new THREE.TextureLoader().load('../../Assets/images/GravelCobbleNormal.png');
             this.groundTextureNormal.wrapS = THREE.RepeatWrapping;
             this.groundTextureNormal.wrapT = THREE.RepeatWrapping;
             this.groundTextureNormal.repeat.set(8, 8);
+
             this.groundMaterial = new PhongMaterial();
             this.groundMaterial.map = this.groundTexture;
             this.groundMaterial.bumpMap = this.groundTextureNormal;
             this.groundMaterial.bumpScale = 0.2;
+
             this.groundGeometry = new BoxGeometry(128, 1, 128);
             this.groundPhysicsMaterial = Physijs.createMaterial(this.groundMaterial, 0, 0);
             this.ground = new Physijs.ConvexMesh(this.groundGeometry, this.groundPhysicsMaterial, 0);
@@ -148,17 +252,19 @@ var scenes;
             this.ground.name = "Ground";
             this.add(this.ground);
             console.log("Added Burnt Ground to scene");
-        };
+        }
+
         /**
          * Adds the player controller to the scene
-         *
+         * 
          * @method addPlayer
          * @return void
          */
-        Level1.prototype.addPlayer = function () {
+        private addPlayer(): void {
             // Player Object
             this.playerGeometry = new BoxGeometry(2, 4, 2);
             this.playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
+
             this.player = new Physijs.BoxMesh(this.playerGeometry, this.playerMaterial, 1);
             this.player.position.set(0, 5, 0);
             this.player.receiveShadow = true;
@@ -166,100 +272,120 @@ var scenes;
             this.player.name = "Player";
             this.add(this.player);
             console.log("Added Player to Scene");
-        };
+        }
+        
+
         /**
          * Add the Green Platform to the scene
-         *
+         * 
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addGreenPlatform = function () {
+
+        private addGreenPlatform(): void {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
+
             this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(-50, 1, 50);
+            this.platform.position.set(-50, 1, 50)
             this.platform.receiveShadow = true;
             this.platform.name = "GreenPlatform";
             this.add(this.platform);
-            console.log("Added Green Platform to Scene");
-        };
+            console.log("Added Green Platform to Scene")
+        }
+
         /**
          * Add the Green Platform to the scene
-         *
+         * 
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addBluePlatform = function () {
+
+        private addBluePlatform(): void {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+
             this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(50, 1, -50);
+            this.platform.position.set(50, 1, -50)
             this.platform.receiveShadow = true;
             this.platform.name = "BluePlatform";
             this.add(this.platform);
-            console.log("Added Blue Platform to Scene");
-        };
+            console.log("Added Blue Platform to Scene")
+        }
+
         /**
          * Add the Green Platform to the scene
-         *
+         * 
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addRedPlatform = function () {
+
+        private addRedPlatform(): void {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
+
             this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
-            this.platform.position.set(50, 1, 50);
+            this.platform.position.set(50, 1, 50)
             this.platform.receiveShadow = true;
             this.platform.name = "RedPlatform";
             this.add(this.platform);
-            console.log("Added Red Platform to Scene");
-        };
+            console.log("Added Red Platform to Scene")
+        }
+
         /**
          * Add wall to the scene
-         *
+         * 
          * @method addWalls
          * @return void
          */
-        Level1.prototype.addWalls = function () {
+
+        private addWalls(): void {
+            
             //border walls
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
+            
             this.borderWall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall1.position.set(0, 1, 64);
             this.borderWall1.receiveShadow = true;
             this.borderWall1.name = "borderWall1";
             this.add(this.borderWall1);
             console.log("Added borderWall 1 to Scene");
+            
             this.borderWall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall2.position.set(0, 1, -64);
             this.borderWall2.receiveShadow = true;
             this.borderWall2.name = "borderWall2";
             this.add(this.borderWall2);
             console.log("Added borderWall 2 to Scene");
+            
             //Horizontal
             this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+            
             this.borderWall3 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall3.position.set(64, 1, 0);
             this.borderWall3.receiveShadow = true;
             this.borderWall3.name = "borderWall3";
             this.add(this.borderWall3);
             console.log("Added borderWall 3 to Scene");
+            
             this.borderWall4 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall4.position.set(-64, 1, 0);
             this.borderWall4.receiveShadow = true;
             this.borderWall4.name = "borderWall4";
             this.add(this.borderWall4);
             console.log("Added borderWall 4 to Scene");
+            
             //Horizontal walls
             // wall Object
             this.wallHorizontalGeometry = new BoxGeometry(1, 10, 50);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+
             //wall 1
             this.wall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.wall1.position.set(0, 1, 38);
@@ -267,6 +393,7 @@ var scenes;
             this.wall1.name = "wall1";
             this.add(this.wall1);
             console.log("Added wall 1 to Scene");
+
             //wall 2
             this.wall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.wall2.position.set(0, 1, -38);
@@ -274,6 +401,7 @@ var scenes;
             this.wall2.name = "wall2";
             this.add(this.wall2);
             console.log("Added wall 2 to Scene");
+            
             //Vertical walls
             //wall 3
             this.wallVerticalGeometry = new BoxGeometry(45, 10, 1);
@@ -283,6 +411,7 @@ var scenes;
             this.wall3.name = "wall3";
             this.add(this.wall3);
             console.log("Added wall 3 to Scene");
+
             //wall 4
             this.wallVerticalGeometry = new BoxGeometry(50, 10, 1);
             this.wall4 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -291,6 +420,7 @@ var scenes;
             this.wall4.name = "wall4";
             this.add(this.wall4);
             console.log("Added wall 4 to Scene");
+            
             //wall 5
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 110);
             this.wall5 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -299,6 +429,7 @@ var scenes;
             this.wall5.name = "wall5";
             this.add(this.wall5);
             console.log("Added wall 5 to Scene");
+            
             //wall 6
             this.wallHorizontalGeometry = new BoxGeometry(45, 10, 1);
             this.wall6 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -307,6 +438,7 @@ var scenes;
             this.wall6.name = "wall6";
             this.add(this.wall6);
             console.log("Added wall 6 to Scene");
+            
             //wall 7
             this.wallHorizontalGeometry = new BoxGeometry(30, 10, 1);
             this.wall7 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -315,6 +447,7 @@ var scenes;
             this.wall7.name = "wall7";
             this.add(this.wall7);
             console.log("Added wall 7 to Scene");
+            
             //wall 8
             this.wallHorizontalGeometry = new BoxGeometry(45, 10, 1);
             this.wall8 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -323,6 +456,7 @@ var scenes;
             this.wall8.name = "wall8";
             this.add(this.wall8);
             console.log("Added wall 8 to Scene");
+            
             //wall 9
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 25);
             this.wall9 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -331,6 +465,7 @@ var scenes;
             this.wall9.name = "wall9";
             this.add(this.wall9);
             console.log("Added wall 9 to Scene");
+           
             //wall 10
             this.wallHorizontalGeometry = new BoxGeometry(15, 10, 1);
             this.wall10 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -339,6 +474,7 @@ var scenes;
             this.wall10.name = "wall9";
             this.add(this.wall10);
             console.log("Added wall 10 to Scene");
+            
             //wall 11
             this.wallHorizontalGeometry = new BoxGeometry(15, 10, 1);
             this.wall11 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -347,6 +483,7 @@ var scenes;
             this.wall11.name = "wall11";
             this.add(this.wall11);
             console.log("Added wall 11 to Scene");
+            
             //wall 12
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 30);
             this.wall12 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -355,15 +492,18 @@ var scenes;
             this.wall12.name = "wall12";
             this.add(this.wall12);
             console.log("Added wall 12 to Scene");
-        };
+        }
+        
         /**
          * Add the Teleportal walls to the scene
-         *
+         * 
          * @method addTeleportalWalls
          * @return void
          */
-        Level1.prototype.addTeleportalWalls = function () {
+
+        private addTeleportalWalls(): void {
             // Teleportal Object          
+            
             //blue teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
@@ -373,6 +513,7 @@ var scenes;
             this.blueTeleportWall.name = "blueTeleportWall";
             this.add(this.blueTeleportWall);
             console.log("Added teleportWall2 to Scene");
+            
             //red teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
@@ -382,7 +523,8 @@ var scenes;
             this.redTeleportWall.name = "redTeleportWall";
             this.add(this.redTeleportWall);
             console.log("Added redTeleportWall to Scene");
-            //green teleportal wall
+            
+             //green teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
             this.greenTeleportWall = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -391,52 +533,64 @@ var scenes;
             this.greenTeleportWall.name = "greenTeleportWall";
             this.add(this.greenTeleportWall);
             console.log("Added greenTeleportWall to Scene");
-        };
+           
+        }
+        
         /**
          * Add the Obstacle Platform to the scene
-         *
+         * 
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addObstaclePlatform = function () {
+
+        private addObstaclePlatform(): void {
             // Platform Object
             // this.platformGeometry = new BoxGeometry(10, 1, 40);
             // this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
+
             // this.platform = new Physijs.BoxMesh(this.platformGeometry, this.platformMaterial, 0);
             // this.platform.position.set(35, 1, -15);
             // this.platform.receiveShadow = true;
             // this.platform.name = "ObstaclePlatform";
             // this.add(this.platform);
             // console.log("Added Obstacle Platform to Scene");
-        };
+      
+        }
+
         /**
          * Add the death plane to the scene
-         *
+         * 
          * @method addDeathPlane
          * @return void
          */
-        Level1.prototype.addDeathPlane = function () {
+        private addDeathPlane(): void {
             this.deathPlaneGeometry = new BoxGeometry(100, 1, 100);
             this.deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({ color: 0xff0000 }), 0.4, 0.6);
+
             this.deathPlane = new Physijs.BoxMesh(this.deathPlaneGeometry, this.deathPlaneMaterial, 0);
             this.deathPlane.position.set(0, -10, 0);
             this.deathPlane.name = "DeathPlane";
             this.add(this.deathPlane);
-        };
+        }
+
         /**
          * This method adds a coin to the scene
-         *
+         * 
          * @method addCoinMesh
          * @return void
          */
-        Level1.prototype.addCoinMesh = function () {
+        private addCoinMesh(): void {
             var self = this;
-            this.coins = new Array(); // Instantiate a convex mesh array
-            var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/coin.json", function (geometry) {
+
+            this.coins = new Array<Physijs.ConvexMesh>(); // Instantiate a convex mesh array
+
+            var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/coin.json", function(geometry: THREE.Geometry) {
                 var phongMaterial = new PhongMaterial({ color: 0xE7AB32 });
                 phongMaterial.emissive = new THREE.Color(0xE7AB32);
+
                 var coinMaterial = Physijs.createMaterial((phongMaterial), 0.4, 0.6);
-                for (var count = 0; count < self.coinCount; count++) {
+
+                for (var count: number = 0; count < self.coinCount; count++) {
                     self.coins[count] = new Physijs.ConvexMesh(geometry, coinMaterial);
                     self.coins[count].receiveShadow = true;
                     self.coins[count].castShadow = true;
@@ -445,33 +599,36 @@ var scenes;
                     console.log("Added Coin Mesh to Scene, at position: " + self.coins[count].position);
                 }
             });
-        };
+
+
+        }
+
         /**
          * This method randomly sets the coin object's position
-         *
+         * 
          * @method setCoinPosition
          * @return void
          */
-        Level1.prototype.setCoinPosition = function (coin) {
-            var randomPointX = Math.floor(Math.random() * 20) - 10;
-            var randomPointZ = Math.floor(Math.random() * 20) - 10;
+        private setCoinPosition(coin: Physijs.ConvexMesh): void {
+            var randomPointX: number = Math.floor(Math.random() * 20) - 10;
+            var randomPointZ: number = Math.floor(Math.random() * 20) - 10;
             coin.position.set(randomPointX, 10, randomPointZ);
             this.add(coin);
-        };
+        }
+
         /**
          * Event Handler method for any pointerLockChange events
-         *
+         * 
          * @method pointerLockChange
          * @return void
          */
-        Level1.prototype.pointerLockChange = function (event) {
+        pointerLockChange(event): void {
             if (document.pointerLockElement === this.element) {
                 // enable our mouse and keyboard controls
                 this.keyboardControls.enabled = true;
                 this.mouseControls.enabled = true;
                 this.blocker.style.display = 'none';
-            }
-            else {
+            } else {
                 this.keyboardControls.enabled = false;
                 this.mouseControls.enabled = false;
                 if (this.gameOver) {
@@ -490,58 +647,47 @@ var scenes;
                     this.blocker.style.display = 'box';
                     this.instructions.style.display = '';
                 }
-                //  if (this.next) {
-                //      this.blocker.style.display = 'none';
-                //      document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                //  }
-                //  else {
-                //      // disable our mouse and keyboard controls
-                //      this.blocker.style.display = '-webkit-box';
-                //      this.blocker.style.display = '-moz-box';
-                //      this.blocker.style.display = 'box';
-                //      this.instructions.style.display = '';
-                //  }
                 console.log("PointerLock disabled");
             }
-        };
+        }
+
         /**
          * Event handler for PointerLockError
-         *
+         * 
          * @method pointerLockError
          * @return void
          */
-        Level1.prototype.pointerLockError = function (event) {
+        private pointerLockError(event): void {
             this.instructions.style.display = '';
             console.log("PointerLock Error Detected!!");
-        };
+        }
+
         // Check Controls Function
+
         /**
          * This method updates the player's position based on user input
-         *
+         * 
          * @method checkControls
          * @return void
          */
-        Level1.prototype.checkControls = function () {
+        private checkControls(): void {
             if (this.keyboardControls.enabled) {
+                
                 this.scoreLabel.text = "SCORE: " + this.scoreValue;
                 this.timerLabel.text = "TIME: " + this.timerValue.toFixed(1);
+
                 if (this.timerValue >= 0) {
                     this.reduceTimer();
                 }
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
-                //     this.next = true;
-                // }
+            
                 this.velocity = new Vector3();
-                var time = performance.now();
+
+                var time: number = performance.now();
                 var delta = (time - this.prevTime) / 1000;
+
                 if (this.isGrounded) {
                     var direction = new Vector3(0, 0, 0);
                     if (this.keyboardControls.moveForward) {
@@ -562,7 +708,9 @@ var scenes;
                             this.isGrounded = false;
                             createjs.Sound.play("jump");
                         }
+
                     }
+
                     this.player.setDamping(0.7, 0.1);
                     // Changing player's rotation
                     this.player.setAngularVelocity(new Vector3(0, this.mouseControls.yaw, 0));
@@ -571,28 +719,34 @@ var scenes;
                     if (Math.abs(this.player.getLinearVelocity().x) < 20 && Math.abs(this.player.getLinearVelocity().y) < 10) {
                         this.player.applyCentralForce(direction);
                     }
+
                     this.cameraLook();
+
                 } // isGrounded ends
+
                 //reset Pitch and Yaw
                 this.mouseControls.pitch = 0;
                 this.mouseControls.yaw = 0;
+
                 this.prevTime = time;
             } // Controls Enabled ends
             else {
                 this.player.setAngularVelocity(new Vector3(0, 0, 0));
             }
-        };
-        Level1.prototype.reduceTimer = function () {
+        }
+
+        private reduceTimer(): void {
             var self = this;
             if (!this.waitTime) {
                 this.waitTime = true;
-                setTimeout(function () {
+                setTimeout(function() {
                     self.timerValue += -0.1;
                     self.waitTime = false;
                 }, 100);
             }
-        };
-        Level1.prototype.randomLocation = function () {
+        }
+
+        private randomLocation(): string {
             this.randomNum = Math.floor(Math.random() * 3);
             console.log(this.randomNum);
             switch (this.randomNum) {
@@ -622,14 +776,17 @@ var scenes;
                     break;
             }
             return this.gotoText;
-        };
-        Level1.prototype.showLevel = function (timer) {
+        }
+        
+        private showLevel(timer:number): void {
             var self = this;
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
             console.log("BEFORE: " + camera.rotation);
+            
             self.showTimer += timer;
-            if (self.showTimer > this.showTime) {
+            if (self.showTimer > this.showTime)
+            {
                 self.waitStart = false;
                 // create parent-child relationship with camera and player
                 camera.position.set(0, 1, 0);
@@ -639,35 +796,47 @@ var scenes;
                 self.player.add(camera);
                 self.showTimer = 0;
             }
-        };
+        }
+
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
+
         /**
          * The start method is the main method for the scene class
-         *
+         * 
          * @method start
          * @return void
          */
-        Level1.prototype.start = function () {
-            var _this = this;
+        public start(): void {
+
             // Set random location at start
             this.randomLocation();
+
             // Set Up Scoreboard
             this.setupScoreboard();
+
             //check to see if pointerlock is supported
             this.havePointerLock = 'pointerLockElement' in document ||
                 'mozPointerLockElement' in document ||
                 'webkitPointerLockElement' in document;
+
+
+
             // Check to see if we have pointerLock
             if (this.havePointerLock) {
                 this.element = document.body;
-                this.instructions.addEventListener('click', function () {
+
+                this.instructions.addEventListener('click', () => {
+
                     // Ask the user for pointer lock
                     console.log("Requesting PointerLock");
-                    _this.element.requestPointerLock = _this.element.requestPointerLock ||
-                        _this.element.mozRequestPointerLock ||
-                        _this.element.webkitRequestPointerLock;
-                    _this.element.requestPointerLock();
+
+                    this.element.requestPointerLock = this.element.requestPointerLock ||
+                        this.element.mozRequestPointerLock ||
+                        this.element.webkitRequestPointerLock;
+
+                    this.element.requestPointerLock();
                 });
+
                 document.addEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
                 document.addEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
                 document.addEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
@@ -675,34 +844,47 @@ var scenes;
                 document.addEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
                 document.addEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
             }
+
             // Scene changes for Physijs
             this.name = "Main";
             this.fog = new THREE.Fog(0xffffff, 0, 750);
             this.setGravity(new THREE.Vector3(0, -10, 0));
+
             // Add Spot Light to the scene
             this.addSpotLight();
+
             // Ground Object
             this.addGround();
+
             // Add player controller
             this.addPlayer();
+
             //Add green platform
             this.addGreenPlatform();
+
             //Add blue platform
             this.addBluePlatform();
+
             //Add red platform
             this.addRedPlatform();
+
             //Add walls
             this.addWalls();
+            
             //Add teleportal walls
             this.addTeleportalWalls();
+            
             //Add Obstacles
             this.addObstaclePlatform();
+
             // Add custom coin imported from Blender
             //this.addCoinMesh();
+
             // Add death plane to the scene
             this.addDeathPlane();
+
             // Collision Check
-            this.player.addEventListener('collision', function (eventObject) {
+            this.player.addEventListener('collision', function(eventObject) {
                 if (eventObject.name === "Ground") {
                     this.isGrounded = true;
                     createjs.Sound.play("land");
@@ -714,6 +896,7 @@ var scenes;
                     this.scoreValue += 100;
                     this.scoreLabel.text = "SCORE: " + this.scoreValue;
                 }
+
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
@@ -721,8 +904,9 @@ var scenes;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
-                    this.timerValue += -10;
+                    this.timerValue += -10; 
                 }
+
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
@@ -730,8 +914,9 @@ var scenes;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
-                    this.timerValue += -10;
+                    this.timerValue += -10; 
                 }
+
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
@@ -739,23 +924,27 @@ var scenes;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
-                    this.timerValue += -10;
+                    this.timerValue += -10; 
                 }
-                if (eventObject.name === "greenTeleportWall") {
+                
+                if(eventObject.name ==="greenTeleportWall"){
                     this.remove(this.player);
                     this.player.position.set(-50, 5, 50);
                     this.add(this.player);
                 }
-                if (eventObject.name === "blueTeleportWall") {
+                
+                if(eventObject.name ==="blueTeleportWall"){
                     this.remove(this.player);
                     this.player.position.set(50, 5, -50);
                     this.add(this.player);
                 }
-                if (eventObject.name === "redTeleportWall") {
+                
+                if(eventObject.name ==="redTeleportWall"){
                     this.remove(this.player);
                     this.player.position.set(50, 5, 50);
                     this.add(this.player);
                 }
+
                 if (eventObject.name === "DeathPlane") {
                     createjs.Sound.play("hit");
                     this.remove(this.player);
@@ -763,63 +952,73 @@ var scenes;
                     this.add(this.player);
                 }
             }.bind(this));
+
+            
+
             this.simulate();
-        };
+        }
+
         /**
          * Camera Look function
-         *
+         * 
          * @method cameraLook
          * @return void
          */
-        Level1.prototype.cameraLook = function () {
-            var zenith = THREE.Math.degToRad(90);
-            var nadir = THREE.Math.degToRad(-90);
-            var cameraPitch = camera.rotation.x + this.mouseControls.pitch;
+        private cameraLook(): void {
+            var zenith: number = THREE.Math.degToRad(90);
+            var nadir: number = THREE.Math.degToRad(-90);
+
+            var cameraPitch: number = camera.rotation.x + this.mouseControls.pitch;
+
             // Constrain the Camera Pitch
             camera.rotation.x = THREE.Math.clamp(cameraPitch, nadir, zenith);
-        };
+        }
+
         /**
          * @method update
          * @returns void
          */
-        Level1.prototype.update = function () {
-            var time2 = performance.now();
+        public update(): void {
+            
+            var time2: number = performance.now();
             var delta = (time2 - this.prevUpdateTime) / 1000;
+            
             if (this.waitStart == true) {
                 this.showLevel(delta);
             }
             else {
                 if (this.gameOver == true) {
-                    //document.exitPointerLock();
+                    document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 1) {
-                    // document.exitPointerLock();
-                    // this.children = [];
-                    // this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL2;
-                    changeScene();
+                
+                if (this.locationsLeft == 6) {
+                    this.gameOver = true;
                 }
+
                 //  this.coins.forEach(coin => {
                 //      coin.setAngularFactor(new Vector3(0, 0, 0));
                 //      coin.setAngularVelocity(new Vector3(0, 1, 0));
                 //  });
+
                 this.checkControls();
             }
+            
             this.prevUpdateTime = time2;
             this.stage.update();
             this.simulate();
-        };
+        }
+
         /**
          * Responds to screen resizes
-         *
+         * 
          * @method resize
          * @return void
          */
-        Level1.prototype.resize = function () {
+        public resize(): void {
             canvas.style.width = "100%";
             this.timerLabel.x = config.Screen.WIDTH * 0.4;
             this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
@@ -828,9 +1027,6 @@ var scenes;
             this.gotoLabel.x = config.Screen.WIDTH * 0.65;
             this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.update();
-        };
-        return Level1;
-    })(scenes.Scene);
-    scenes.Level1 = Level1;
-})(scenes || (scenes = {}));
-//# sourceMappingURL=level1.js.map
+        }
+    }
+}

@@ -38,8 +38,11 @@ var renderer;
 var camera;
 var menu;
 var lvl1;
+var lvl2;
+var lvl3;
 var instr;
 var over;
+var next;
 var stats;
 var canvas;
 var assets;
@@ -141,15 +144,21 @@ function changeScene() {
             break;
         case config.Scene.LEVEL2:
             // show LEVEL 2 scene
-            // lvl2 = new scenes.Level2();
-            // scene = lvl2;
-            // console.log("Starting LEVEL 2 Scene");
+            lvl2 = new scenes.Level2();
+            scene = lvl2;
+            console.log("Starting LEVEL 2 Scene");
             break;
         case config.Scene.LEVEL3:
             // show LEVEL 3 scene
-            // lvl3 = new scenes.Level3();
-            // scene = lvl3;
-            // console.log("Starting LEVEL 3 Scene");
+            lvl3 = new scenes.Level3();
+            scene = lvl3;
+            console.log("Starting LEVEL 3 Scene");
+            break;
+        case config.Scene.NEXT:
+            // show the NEXTLEVEL scene wao
+            next = new scenes.Next();
+            scene = next;
+            console.log("Starting NEXTLEVEL Scene");
             break;
         case config.Scene.OVER:
             // show the game OVER scene

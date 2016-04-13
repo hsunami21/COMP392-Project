@@ -121,7 +121,7 @@ var scenes;
             this.simulate();
         };
         return Menu;
-    }(scenes.Scene));
+    })(scenes.Scene);
     scenes.Menu = Menu;
 })(scenes || (scenes = {}));
 //# sourceMappingURL=menu.js.map

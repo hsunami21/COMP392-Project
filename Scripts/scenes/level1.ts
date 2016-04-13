@@ -47,7 +47,7 @@ module scenes {
         private wallVerticalGeometry: CubeGeometry;
 
         private wallMaterial: Physijs.Material;
-        
+
         private borderWall1: Physijs.Mesh;
         private borderWall2: Physijs.Mesh;
         private borderWall3: Physijs.Mesh;
@@ -65,13 +65,13 @@ module scenes {
         private wall10: Physijs.Mesh;
         private wall11: Physijs.Mesh;
         private wall12: Physijs.Mesh;
-        
-        
+
+
         //teleport walls
         private blueTeleportWall: Physijs.Mesh;
         private greenTeleportWall: Physijs.Mesh;
         private redTeleportWall: Physijs.Mesh;
-        
+
 
         private velocity: Vector3;
         private prevTime: number;
@@ -91,7 +91,8 @@ module scenes {
         private waitStart: boolean;
         private waitTime: boolean;
         private gameOver: boolean;
-        
+        private next: boolean;
+
         private showTime: number = 5;
         private showTimer: number = 0;
 
@@ -273,7 +274,7 @@ module scenes {
             this.add(this.player);
             console.log("Added Player to Scene");
         }
-        
+
 
         /**
          * Add the Green Platform to the scene
@@ -343,44 +344,44 @@ module scenes {
          */
 
         private addWalls(): void {
-            
+
             //border walls
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
-            
+
             this.borderWall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall1.position.set(0, 1, 64);
             this.borderWall1.receiveShadow = true;
             this.borderWall1.name = "borderWall1";
             this.add(this.borderWall1);
             console.log("Added borderWall 1 to Scene");
-            
+
             this.borderWall2 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall2.position.set(0, 1, -64);
             this.borderWall2.receiveShadow = true;
             this.borderWall2.name = "borderWall2";
             this.add(this.borderWall2);
             console.log("Added borderWall 2 to Scene");
-            
+
             //Horizontal
             this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
-            
+
             this.borderWall3 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall3.position.set(64, 1, 0);
             this.borderWall3.receiveShadow = true;
             this.borderWall3.name = "borderWall3";
             this.add(this.borderWall3);
             console.log("Added borderWall 3 to Scene");
-            
+
             this.borderWall4 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall4.position.set(-64, 1, 0);
             this.borderWall4.receiveShadow = true;
             this.borderWall4.name = "borderWall4";
             this.add(this.borderWall4);
             console.log("Added borderWall 4 to Scene");
-            
+
             //Horizontal walls
             // wall Object
             this.wallHorizontalGeometry = new BoxGeometry(1, 10, 50);
@@ -401,7 +402,7 @@ module scenes {
             this.wall2.name = "wall2";
             this.add(this.wall2);
             console.log("Added wall 2 to Scene");
-            
+
             //Vertical walls
             //wall 3
             this.wallVerticalGeometry = new BoxGeometry(45, 10, 1);
@@ -420,7 +421,7 @@ module scenes {
             this.wall4.name = "wall4";
             this.add(this.wall4);
             console.log("Added wall 4 to Scene");
-            
+
             //wall 5
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 110);
             this.wall5 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -429,7 +430,7 @@ module scenes {
             this.wall5.name = "wall5";
             this.add(this.wall5);
             console.log("Added wall 5 to Scene");
-            
+
             //wall 6
             this.wallHorizontalGeometry = new BoxGeometry(45, 10, 1);
             this.wall6 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -438,7 +439,7 @@ module scenes {
             this.wall6.name = "wall6";
             this.add(this.wall6);
             console.log("Added wall 6 to Scene");
-            
+
             //wall 7
             this.wallHorizontalGeometry = new BoxGeometry(30, 10, 1);
             this.wall7 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -447,7 +448,7 @@ module scenes {
             this.wall7.name = "wall7";
             this.add(this.wall7);
             console.log("Added wall 7 to Scene");
-            
+
             //wall 8
             this.wallHorizontalGeometry = new BoxGeometry(45, 10, 1);
             this.wall8 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -456,7 +457,7 @@ module scenes {
             this.wall8.name = "wall8";
             this.add(this.wall8);
             console.log("Added wall 8 to Scene");
-            
+
             //wall 9
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 25);
             this.wall9 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -465,7 +466,7 @@ module scenes {
             this.wall9.name = "wall9";
             this.add(this.wall9);
             console.log("Added wall 9 to Scene");
-           
+
             //wall 10
             this.wallHorizontalGeometry = new BoxGeometry(15, 10, 1);
             this.wall10 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -474,7 +475,7 @@ module scenes {
             this.wall10.name = "wall9";
             this.add(this.wall10);
             console.log("Added wall 10 to Scene");
-            
+
             //wall 11
             this.wallHorizontalGeometry = new BoxGeometry(15, 10, 1);
             this.wall11 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -483,7 +484,7 @@ module scenes {
             this.wall11.name = "wall11";
             this.add(this.wall11);
             console.log("Added wall 11 to Scene");
-            
+
             //wall 12
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 30);
             this.wall12 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -493,7 +494,7 @@ module scenes {
             this.add(this.wall12);
             console.log("Added wall 12 to Scene");
         }
-        
+
         /**
          * Add the Teleportal walls to the scene
          * 
@@ -503,7 +504,7 @@ module scenes {
 
         private addTeleportalWalls(): void {
             // Teleportal Object          
-            
+
             //blue teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
@@ -513,7 +514,7 @@ module scenes {
             this.blueTeleportWall.name = "blueTeleportWall";
             this.add(this.blueTeleportWall);
             console.log("Added teleportWall2 to Scene");
-            
+
             //red teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
@@ -523,8 +524,8 @@ module scenes {
             this.redTeleportWall.name = "redTeleportWall";
             this.add(this.redTeleportWall);
             console.log("Added redTeleportWall to Scene");
-            
-             //green teleportal wall
+
+            //green teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
             this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
             this.greenTeleportWall = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -533,9 +534,9 @@ module scenes {
             this.greenTeleportWall.name = "greenTeleportWall";
             this.add(this.greenTeleportWall);
             console.log("Added greenTeleportWall to Scene");
-           
+
         }
-        
+
         /**
          * Add the Obstacle Platform to the scene
          * 
@@ -554,7 +555,7 @@ module scenes {
             // this.platform.name = "ObstaclePlatform";
             // this.add(this.platform);
             // console.log("Added Obstacle Platform to Scene");
-      
+
         }
 
         /**
@@ -647,6 +648,23 @@ module scenes {
                     this.blocker.style.display = 'box';
                     this.instructions.style.display = '';
                 }
+                //  if (this.next) {
+                //      this.blocker.style.display = 'none';
+                //      document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
+                //      document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
+                //      document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
+                //      document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+                //      document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+                //      document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+                //  }
+                //  else {
+                //      // disable our mouse and keyboard controls
+                //      this.blocker.style.display = '-webkit-box';
+                //      this.blocker.style.display = '-moz-box';
+                //      this.blocker.style.display = 'box';
+                //      this.instructions.style.display = '';
+                //  }
+
                 console.log("PointerLock disabled");
             }
         }
@@ -672,7 +690,7 @@ module scenes {
          */
         private checkControls(): void {
             if (this.keyboardControls.enabled) {
-                
+
                 this.scoreLabel.text = "SCORE: " + this.scoreValue;
                 this.timerLabel.text = "TIME: " + this.timerValue.toFixed(1);
 
@@ -682,7 +700,10 @@ module scenes {
                 else {
                     this.gameOver = true;
                 }
-            
+                // if (this.locationsLeft == 1) {
+                //     this.next = true;
+                // }
+
                 this.velocity = new Vector3();
 
                 var time: number = performance.now();
@@ -777,16 +798,15 @@ module scenes {
             }
             return this.gotoText;
         }
-        
-        private showLevel(timer:number): void {
+
+        private showLevel(timer: number): void {
             var self = this;
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
             console.log("BEFORE: " + camera.rotation);
-            
+
             self.showTimer += timer;
-            if (self.showTimer > this.showTime)
-            {
+            if (self.showTimer > this.showTime) {
                 self.waitStart = false;
                 // create parent-child relationship with camera and player
                 camera.position.set(0, 1, 0);
@@ -870,10 +890,10 @@ module scenes {
 
             //Add walls
             this.addWalls();
-            
+
             //Add teleportal walls
             this.addTeleportalWalls();
-            
+
             //Add Obstacles
             this.addObstaclePlatform();
 
@@ -904,7 +924,7 @@ module scenes {
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
-                    this.timerValue += -10; 
+                    this.timerValue += -10;
                 }
 
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
@@ -914,7 +934,7 @@ module scenes {
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
-                    this.timerValue += -10; 
+                    this.timerValue += -10;
                 }
 
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
@@ -924,22 +944,22 @@ module scenes {
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
-                    this.timerValue += -10; 
+                    this.timerValue += -10;
                 }
-                
-                if(eventObject.name ==="greenTeleportWall"){
+
+                if (eventObject.name === "greenTeleportWall") {
                     this.remove(this.player);
                     this.player.position.set(-50, 5, 50);
                     this.add(this.player);
                 }
-                
-                if(eventObject.name ==="blueTeleportWall"){
+
+                if (eventObject.name === "blueTeleportWall") {
                     this.remove(this.player);
                     this.player.position.set(50, 5, -50);
                     this.add(this.player);
                 }
-                
-                if(eventObject.name ==="redTeleportWall"){
+
+                if (eventObject.name === "redTeleportWall") {
                     this.remove(this.player);
                     this.player.position.set(50, 5, 50);
                     this.add(this.player);
@@ -953,7 +973,7 @@ module scenes {
                 }
             }.bind(this));
 
-            
+
 
             this.simulate();
         }
@@ -979,25 +999,31 @@ module scenes {
          * @returns void
          */
         public update(): void {
-            
+
             var time2: number = performance.now();
             var delta = (time2 - this.prevUpdateTime) / 1000;
-            
+
             if (this.waitStart == true) {
                 this.showLevel(delta);
             }
             else {
                 if (this.gameOver == true) {
-                    document.exitPointerLock();
+                    //document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                
-                if (this.locationsLeft == 6) {
-                    this.gameOver = true;
+                if (this.locationsLeft == 1) {
+                    // document.exitPointerLock();
+                    // this.children = [];
+                    // this.player.remove(camera);
+                    currentScene = config.Scene.LEVEL2;
+                    changeScene();
                 }
+
+
+
 
                 //  this.coins.forEach(coin => {
                 //      coin.setAngularFactor(new Vector3(0, 0, 0));
@@ -1006,7 +1032,8 @@ module scenes {
 
                 this.checkControls();
             }
-            
+
+
             this.prevUpdateTime = time2;
             this.stage.update();
             this.simulate();

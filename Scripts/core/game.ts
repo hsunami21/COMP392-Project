@@ -34,7 +34,7 @@ import Clock = THREE.Clock;
 Physijs.scripts.worker = "/Scripts/lib/Physijs/physijs_worker.js";
 Physijs.scripts.ammo = "/Scripts/lib/Physijs/examples/js/ammo.js";
 var myWorker = new Worker(Physijs.scripts.worker);
- 
+
 // Game Variables
 var scene: scenes.Scene;
 var currentScene: number;
@@ -43,8 +43,11 @@ var camera: PerspectiveCamera;
 
 var menu: scenes.Menu;
 var lvl1: scenes.Level1;
+var lvl2: scenes.Level2;
+var lvl3: scenes.Level3;
 var instr: scenes.Instructions;
 var over: scenes.Over;
+var next: scenes.Next;
 
 var stats: Stats;
 var canvas: HTMLElement;
@@ -54,10 +57,10 @@ var manifest = [
     { id: "hit", src: "../../Assets/audio/hit.wav" },
     { id: "coin", src: "../../Assets/audio/coin.mp3" },
     { id: "jump", src: "../../Assets/audio/Jump.wav" },
-    { id: "StartButton", src: "../../Assets/images/Button_Play.png"},
-    { id: "InstructionsButton", src: "../../Assets/images/Button_Instr.png"},
-    { id: "RestartButton", src: "../../Assets/images/Button_Restart.png"},
-    { id: "BackButton", src: "../../Assets/images/Button_Back.png"}
+    { id: "StartButton", src: "../../Assets/images/Button_Play.png" },
+    { id: "InstructionsButton", src: "../../Assets/images/Button_Instr.png" },
+    { id: "RestartButton", src: "../../Assets/images/Button_Restart.png" },
+    { id: "BackButton", src: "../../Assets/images/Button_Back.png" }
 
 ];
 
@@ -158,7 +161,7 @@ function changeScene(): void {
             // show the MENU scene
             menu = new scenes.Menu();
             scene = menu;
-            console.log("Starting MENU Scene"); 
+            console.log("Starting MENU Scene");
             break;
         case config.Scene.LEVEL1:
             // show LEVEL 1 scene
@@ -168,15 +171,21 @@ function changeScene(): void {
             break;
         case config.Scene.LEVEL2:
             // show LEVEL 2 scene
-            // lvl2 = new scenes.Level2();
-            // scene = lvl2;
-            // console.log("Starting LEVEL 2 Scene");
+            lvl2 = new scenes.Level2();
+            scene = lvl2;
+            console.log("Starting LEVEL 2 Scene");
             break;
         case config.Scene.LEVEL3:
             // show LEVEL 3 scene
-            // lvl3 = new scenes.Level3();
-            // scene = lvl3;
-            // console.log("Starting LEVEL 3 Scene");
+            lvl3 = new scenes.Level3();
+            scene = lvl3;
+            console.log("Starting LEVEL 3 Scene");
+            break;
+        case config.Scene.NEXT:
+            // show the NEXTLEVEL scene wao
+            next = new scenes.Next();
+            scene = next;
+            console.log("Starting NEXTLEVEL Scene");
             break;
         case config.Scene.OVER:
             // show the game OVER scene
@@ -190,6 +199,7 @@ function changeScene(): void {
             scene = instr;
             console.log("Starting INSTRUCTIONS Scene");
             break;
+
     }
 }
 

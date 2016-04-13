@@ -16,12 +16,12 @@ var scenes;
      * @class Level1
      * @param havePointerLock {boolean}
      */
-    var Level1 = (function (_super) {
-        __extends(Level1, _super);
+    var Level3 = (function (_super) {
+        __extends(Level3, _super);
         /**
          * @constructor
          */
-        function Level1() {
+        function Level3() {
             _super.call(this);
             this.showTime = 5;
             this.showTimer = 0;
@@ -35,7 +35,7 @@ var scenes;
          * @method setupCanvas
          * @return void
          */
-        Level1.prototype._setupCanvas = function () {
+        Level3.prototype._setupCanvas = function () {
             canvas.setAttribute("width", config.Screen.WIDTH.toString());
             canvas.setAttribute("height", (config.Screen.HEIGHT * 0.1).toString());
             canvas.style.backgroundColor = "#000000";
@@ -46,7 +46,7 @@ var scenes;
          * @method _initialize
          * @returns void
          */
-        Level1.prototype._initialize = function () {
+        Level3.prototype._initialize = function () {
             // Create to HTMLElements
             this.blocker = document.getElementById("blocker");
             this.instructions = document.getElementById("instructions");
@@ -73,7 +73,7 @@ var scenes;
          * @method setupScoreboard
          * @returns void
          */
-        Level1.prototype.setupScoreboard = function () {
+        Level3.prototype.setupScoreboard = function () {
             // initialize  score and lives values
             this.scoreValue = 0;
             this.timerValue = 30.0;
@@ -102,7 +102,7 @@ var scenes;
          * @method addSpotLight
          * @return void
          */
-        Level1.prototype.addSpotLight = function () {
+        Level3.prototype.addSpotLight = function () {
             // Spot Light
             this.spotLight = new SpotLight(0xffffff);
             this.spotLight.position.set(20, 128, -15);
@@ -128,7 +128,7 @@ var scenes;
          * @method addGround
          * @return void
          */
-        Level1.prototype.addGround = function () {
+        Level3.prototype.addGround = function () {
             this.groundTexture = new THREE.TextureLoader().load('../../Assets/images/GravelCobble.jpg');
             this.groundTexture.wrapS = THREE.RepeatWrapping;
             this.groundTexture.wrapT = THREE.RepeatWrapping;
@@ -155,7 +155,7 @@ var scenes;
          * @method addPlayer
          * @return void
          */
-        Level1.prototype.addPlayer = function () {
+        Level3.prototype.addPlayer = function () {
             // Player Object
             this.playerGeometry = new BoxGeometry(2, 4, 2);
             this.playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
@@ -173,7 +173,7 @@ var scenes;
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addGreenPlatform = function () {
+        Level3.prototype.addGreenPlatform = function () {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
@@ -190,7 +190,7 @@ var scenes;
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addBluePlatform = function () {
+        Level3.prototype.addBluePlatform = function () {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
@@ -207,7 +207,7 @@ var scenes;
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addRedPlatform = function () {
+        Level3.prototype.addRedPlatform = function () {
             // Platform Object
             this.platformGeometry = new BoxGeometry(10, 1, 10);
             this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
@@ -224,7 +224,7 @@ var scenes;
          * @method addWalls
          * @return void
          */
-        Level1.prototype.addWalls = function () {
+        Level3.prototype.addWalls = function () {
             //border walls
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
@@ -362,7 +362,7 @@ var scenes;
          * @method addTeleportalWalls
          * @return void
          */
-        Level1.prototype.addTeleportalWalls = function () {
+        Level3.prototype.addTeleportalWalls = function () {
             // Teleportal Object          
             //blue teleportal wall
             this.wallVerticalGeometry = new BoxGeometry(1, 7, 5);
@@ -398,7 +398,7 @@ var scenes;
          * @method addGreenPlatform
          * @return void
          */
-        Level1.prototype.addObstaclePlatform = function () {
+        Level3.prototype.addObstaclePlatform = function () {
             // Platform Object
             // this.platformGeometry = new BoxGeometry(10, 1, 40);
             // this.platformMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xFF0000 }), 0.4, 0);
@@ -415,7 +415,7 @@ var scenes;
          * @method addDeathPlane
          * @return void
          */
-        Level1.prototype.addDeathPlane = function () {
+        Level3.prototype.addDeathPlane = function () {
             this.deathPlaneGeometry = new BoxGeometry(100, 1, 100);
             this.deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({ color: 0xff0000 }), 0.4, 0.6);
             this.deathPlane = new Physijs.BoxMesh(this.deathPlaneGeometry, this.deathPlaneMaterial, 0);
@@ -429,7 +429,7 @@ var scenes;
          * @method addCoinMesh
          * @return void
          */
-        Level1.prototype.addCoinMesh = function () {
+        Level3.prototype.addCoinMesh = function () {
             var self = this;
             this.coins = new Array(); // Instantiate a convex mesh array
             var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/coin.json", function (geometry) {
@@ -452,7 +452,7 @@ var scenes;
          * @method setCoinPosition
          * @return void
          */
-        Level1.prototype.setCoinPosition = function (coin) {
+        Level3.prototype.setCoinPosition = function (coin) {
             var randomPointX = Math.floor(Math.random() * 20) - 10;
             var randomPointZ = Math.floor(Math.random() * 20) - 10;
             coin.position.set(randomPointX, 10, randomPointZ);
@@ -464,7 +464,7 @@ var scenes;
          * @method pointerLockChange
          * @return void
          */
-        Level1.prototype.pointerLockChange = function (event) {
+        Level3.prototype.pointerLockChange = function (event) {
             if (document.pointerLockElement === this.element) {
                 // enable our mouse and keyboard controls
                 this.keyboardControls.enabled = true;
@@ -490,22 +490,6 @@ var scenes;
                     this.blocker.style.display = 'box';
                     this.instructions.style.display = '';
                 }
-                //  if (this.next) {
-                //      this.blocker.style.display = 'none';
-                //      document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                //  }
-                //  else {
-                //      // disable our mouse and keyboard controls
-                //      this.blocker.style.display = '-webkit-box';
-                //      this.blocker.style.display = '-moz-box';
-                //      this.blocker.style.display = 'box';
-                //      this.instructions.style.display = '';
-                //  }
                 console.log("PointerLock disabled");
             }
         };
@@ -515,7 +499,7 @@ var scenes;
          * @method pointerLockError
          * @return void
          */
-        Level1.prototype.pointerLockError = function (event) {
+        Level3.prototype.pointerLockError = function (event) {
             this.instructions.style.display = '';
             console.log("PointerLock Error Detected!!");
         };
@@ -526,7 +510,7 @@ var scenes;
          * @method checkControls
          * @return void
          */
-        Level1.prototype.checkControls = function () {
+        Level3.prototype.checkControls = function () {
             if (this.keyboardControls.enabled) {
                 this.scoreLabel.text = "SCORE: " + this.scoreValue;
                 this.timerLabel.text = "TIME: " + this.timerValue.toFixed(1);
@@ -536,9 +520,6 @@ var scenes;
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
-                //     this.next = true;
-                // }
                 this.velocity = new Vector3();
                 var time = performance.now();
                 var delta = (time - this.prevTime) / 1000;
@@ -582,7 +563,7 @@ var scenes;
                 this.player.setAngularVelocity(new Vector3(0, 0, 0));
             }
         };
-        Level1.prototype.reduceTimer = function () {
+        Level3.prototype.reduceTimer = function () {
             var self = this;
             if (!this.waitTime) {
                 this.waitTime = true;
@@ -592,7 +573,7 @@ var scenes;
                 }, 100);
             }
         };
-        Level1.prototype.randomLocation = function () {
+        Level3.prototype.randomLocation = function () {
             this.randomNum = Math.floor(Math.random() * 3);
             console.log(this.randomNum);
             switch (this.randomNum) {
@@ -623,7 +604,7 @@ var scenes;
             }
             return this.gotoText;
         };
-        Level1.prototype.showLevel = function (timer) {
+        Level3.prototype.showLevel = function (timer) {
             var self = this;
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
@@ -647,7 +628,7 @@ var scenes;
          * @method start
          * @return void
          */
-        Level1.prototype.start = function () {
+        Level3.prototype.start = function () {
             var _this = this;
             // Set random location at start
             this.randomLocation();
@@ -771,7 +752,7 @@ var scenes;
          * @method cameraLook
          * @return void
          */
-        Level1.prototype.cameraLook = function () {
+        Level3.prototype.cameraLook = function () {
             var zenith = THREE.Math.degToRad(90);
             var nadir = THREE.Math.degToRad(-90);
             var cameraPitch = camera.rotation.x + this.mouseControls.pitch;
@@ -782,7 +763,7 @@ var scenes;
          * @method update
          * @returns void
          */
-        Level1.prototype.update = function () {
+        Level3.prototype.update = function () {
             var time2 = performance.now();
             var delta = (time2 - this.prevUpdateTime) / 1000;
             if (this.waitStart == true) {
@@ -790,18 +771,14 @@ var scenes;
             }
             else {
                 if (this.gameOver == true) {
-                    //document.exitPointerLock();
+                    document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 1) {
-                    // document.exitPointerLock();
-                    // this.children = [];
-                    // this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL2;
-                    changeScene();
+                if (this.locationsLeft == 6) {
+                    this.gameOver = true;
                 }
                 //  this.coins.forEach(coin => {
                 //      coin.setAngularFactor(new Vector3(0, 0, 0));
@@ -819,7 +796,7 @@ var scenes;
          * @method resize
          * @return void
          */
-        Level1.prototype.resize = function () {
+        Level3.prototype.resize = function () {
             canvas.style.width = "100%";
             this.timerLabel.x = config.Screen.WIDTH * 0.4;
             this.timerLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
@@ -829,8 +806,8 @@ var scenes;
             this.gotoLabel.y = (config.Screen.HEIGHT * 0.1) * 0.15;
             this.stage.update();
         };
-        return Level1;
+        return Level3;
     })(scenes.Scene);
-    scenes.Level1 = Level1;
+    scenes.Level3 = Level3;
 })(scenes || (scenes = {}));
-//# sourceMappingURL=level1.js.map
+//# sourceMappingURL=level3.js.map
