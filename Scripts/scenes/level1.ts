@@ -624,6 +624,8 @@ module scenes {
          * @return void
          */
         pointerLockChange(event): void {
+            if(currentScene ==config.Scene.LEVEL1)
+            {
             if (document.pointerLockElement === this.element) {
                 // enable our mouse and keyboard controls
                 this.keyboardControls.enabled = true;
@@ -648,24 +650,25 @@ module scenes {
                     this.blocker.style.display = 'box';
                     this.instructions.style.display = '';
                 }
-                //  if (this.next) {
-                //      this.blocker.style.display = 'none';
-                //      document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                //  }
-                //  else {
-                //      // disable our mouse and keyboard controls
-                //      this.blocker.style.display = '-webkit-box';
-                //      this.blocker.style.display = '-moz-box';
-                //      this.blocker.style.display = 'box';
-                //      this.instructions.style.display = '';
-                //  }
+                if (this.next) {
+                    this.blocker.style.display = 'none';
+                    document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+                    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+                    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+                }
+                else {
+                    // disable our mouse and keyboard controls
+                    this.blocker.style.display = '-webkit-box';
+                    this.blocker.style.display = '-moz-box';
+                    this.blocker.style.display = 'box';
+                    this.instructions.style.display = '';
+                }
 
                 console.log("PointerLock disabled");
+            }
             }
         }
 
@@ -700,9 +703,9 @@ module scenes {
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
-                //     this.next = true;
-                // }
+                if (this.locationsLeft == 1) {
+                    this.next = true;
+                }
 
                 this.velocity = new Vector3();
 
@@ -842,7 +845,7 @@ module scenes {
 
 
             // Check to see if we have pointerLock
-            if (this.havePointerLock) {
+            if (this.havePointerLock && currentScene == config.Scene.LEVEL1) {
                 this.element = document.body;
 
                 this.instructions.addEventListener('click', () => {
@@ -1001,24 +1004,26 @@ module scenes {
         public update(): void {
 
             var time2: number = performance.now();
-            var delta = (time2 - this.prevUpdateTime) / 1000;
+            var delta = (time2 - this.prevUpdateTime) / 2000;
 
             if (this.waitStart == true) {
                 this.showLevel(delta);
             }
             else {
                 if (this.gameOver == true) {
-                    //document.exitPointerLock();
+                    document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 1) {
-                    // document.exitPointerLock();
-                    // this.children = [];
-                    // this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL2;
+                if (this.next == true) {
+                    document.exitPointerLock();
+                    this.children = [];
+                    this.player.remove(camera);
+                    // camera.position.set(0, 270, 0);
+                    // camera.lookAt(new Vector3(0, 0, 0));
+                    currentScene = config.Scene.NEXT;
                     changeScene();
                 }
 
@@ -1032,7 +1037,6 @@ module scenes {
 
                 this.checkControls();
             }
-
 
             this.prevUpdateTime = time2;
             this.stage.update();

@@ -465,48 +465,50 @@ var scenes;
          * @return void
          */
         Level1.prototype.pointerLockChange = function (event) {
-            if (document.pointerLockElement === this.element) {
-                // enable our mouse and keyboard controls
-                this.keyboardControls.enabled = true;
-                this.mouseControls.enabled = true;
-                this.blocker.style.display = 'none';
-            }
-            else {
-                this.keyboardControls.enabled = false;
-                this.mouseControls.enabled = false;
-                if (this.gameOver) {
+            if (currentScene == config.Scene.LEVEL1) {
+                if (document.pointerLockElement === this.element) {
+                    // enable our mouse and keyboard controls
+                    this.keyboardControls.enabled = true;
+                    this.mouseControls.enabled = true;
                     this.blocker.style.display = 'none';
-                    document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                    document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                    document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
                 }
                 else {
-                    // disable our mouse and keyboard controls
-                    this.blocker.style.display = '-webkit-box';
-                    this.blocker.style.display = '-moz-box';
-                    this.blocker.style.display = 'box';
-                    this.instructions.style.display = '';
+                    this.keyboardControls.enabled = false;
+                    this.mouseControls.enabled = false;
+                    if (this.gameOver) {
+                        this.blocker.style.display = 'none';
+                        document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
+                        document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
+                        document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
+                        document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+                        document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+                        document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+                    }
+                    else {
+                        // disable our mouse and keyboard controls
+                        this.blocker.style.display = '-webkit-box';
+                        this.blocker.style.display = '-moz-box';
+                        this.blocker.style.display = 'box';
+                        this.instructions.style.display = '';
+                    }
+                    if (this.next) {
+                        this.blocker.style.display = 'none';
+                        document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
+                        document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
+                        document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
+                        document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+                        document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+                        document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+                    }
+                    else {
+                        // disable our mouse and keyboard controls
+                        this.blocker.style.display = '-webkit-box';
+                        this.blocker.style.display = '-moz-box';
+                        this.blocker.style.display = 'box';
+                        this.instructions.style.display = '';
+                    }
+                    console.log("PointerLock disabled");
                 }
-                //  if (this.next) {
-                //      this.blocker.style.display = 'none';
-                //      document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                //  }
-                //  else {
-                //      // disable our mouse and keyboard controls
-                //      this.blocker.style.display = '-webkit-box';
-                //      this.blocker.style.display = '-moz-box';
-                //      this.blocker.style.display = 'box';
-                //      this.instructions.style.display = '';
-                //  }
-                console.log("PointerLock disabled");
             }
         };
         /**
@@ -536,9 +538,9 @@ var scenes;
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
-                //     this.next = true;
-                // }
+                if (this.locationsLeft == 1) {
+                    this.next = true;
+                }
                 this.velocity = new Vector3();
                 var time = performance.now();
                 var delta = (time - this.prevTime) / 1000;
@@ -658,7 +660,7 @@ var scenes;
                 'mozPointerLockElement' in document ||
                 'webkitPointerLockElement' in document;
             // Check to see if we have pointerLock
-            if (this.havePointerLock) {
+            if (this.havePointerLock && currentScene == config.Scene.LEVEL1) {
                 this.element = document.body;
                 this.instructions.addEventListener('click', function () {
                     // Ask the user for pointer lock
@@ -784,23 +786,25 @@ var scenes;
          */
         Level1.prototype.update = function () {
             var time2 = performance.now();
-            var delta = (time2 - this.prevUpdateTime) / 1000;
+            var delta = (time2 - this.prevUpdateTime) / 2000;
             if (this.waitStart == true) {
                 this.showLevel(delta);
             }
             else {
                 if (this.gameOver == true) {
-                    //document.exitPointerLock();
+                    document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 1) {
-                    // document.exitPointerLock();
-                    // this.children = [];
-                    // this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL2;
+                if (this.next == true) {
+                    document.exitPointerLock();
+                    this.children = [];
+                    this.player.remove(camera);
+                    // camera.position.set(0, 270, 0);
+                    // camera.lookAt(new Vector3(0, 0, 0));
+                    currentScene = config.Scene.NEXT;
                     changeScene();
                 }
                 //  this.coins.forEach(coin => {
