@@ -14,6 +14,7 @@ module config {
         public static NEXT: number = 4;
         public static OVER: number = 5;
         public static INSTRUCTIONS: number = 6;
+        public static EXIT: number = 7;
     }
     
 }

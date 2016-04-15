@@ -19,6 +19,7 @@ module scenes {
         private _gameLabel: createjs.Text;
         private _startButton: createjs.Bitmap;
         private _instructionsButton: createjs.Bitmap;
+        private _exitButton: createjs.Bitmap;
 
 
         /**
@@ -117,6 +118,26 @@ module scenes {
 
             this._instructionsButton.on("click", (event: createjs.MouseEvent) => {
                 currentScene = config.Scene.INSTRUCTIONS;
+                changeScene();
+            });
+            
+            this._exitButton = new createjs.Bitmap(assets.getResult("ExitButton"));
+            this._exitButton.regX = this._exitButton.getBounds().width * 0.5;
+            this._exitButton.regY = this._exitButton.getBounds().height * 0.5;
+            this._exitButton.x = config.Screen.WIDTH * 0.5;
+            this._exitButton.y = (config.Screen.HEIGHT * 0.5) + 200;
+            this._stage.addChild(this._exitButton);
+
+            this._exitButton.on("mouseover", (event: createjs.MouseEvent) => {
+                event.target.alpha = 0.7;
+            });
+
+            this._exitButton.on("mouseout", (event: createjs.MouseEvent) => {
+                event.target.alpha = 1.0;
+            });
+
+            this._exitButton.on("click", (event: createjs.MouseEvent) => {
+                currentScene = config.Scene.EXIT;
                 changeScene();
             });
         }

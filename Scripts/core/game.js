@@ -43,6 +43,7 @@ var lvl3;
 var instr;
 var over;
 var next;
+var exit;
 var stats;
 var canvas;
 var assets;
@@ -54,7 +55,8 @@ var manifest = [
     { id: "StartButton", src: "../../Assets/images/Button_Play.png" },
     { id: "InstructionsButton", src: "../../Assets/images/Button_Instr.png" },
     { id: "RestartButton", src: "../../Assets/images/Button_Restart.png" },
-    { id: "BackButton", src: "../../Assets/images/Button_Back.png" }
+    { id: "BackButton", src: "../../Assets/images/Button_Back.png" },
+    { id: "ExitButton", src: "../../Assets/images/Button_Exit.png" }
 ];
 function preload() {
     assets = new createjs.LoadQueue();
@@ -171,6 +173,12 @@ function changeScene() {
             instr = new scenes.Instructions();
             scene = instr;
             console.log("Starting INSTRUCTIONS Scene");
+            break;
+        case config.Scene.EXIT:
+            // show the INSTRUCTIONS scene
+            exit = new scenes.Exit();
+            scene = exit;
+            console.log("Starting EXIT Scene");
             break;
     }
 }

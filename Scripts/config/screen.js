@@ -20,6 +20,7 @@ var config;
         Scene.NEXT = 4;
         Scene.OVER = 5;
         Scene.INSTRUCTIONS = 6;
+        Scene.EXIT = 7;
         return Scene;
     })();
     config.Scene = Scene;
