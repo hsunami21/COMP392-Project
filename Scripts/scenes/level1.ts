@@ -703,7 +703,7 @@ module scenes {
                 else {
                     this.gameOver = true;
                 }
-                if (this.locationsLeft == 1) {
+                if (this.locationsLeft == 5) {
                     this.next = true;
                 }
 
@@ -1023,7 +1023,7 @@ module scenes {
                     this.player.remove(camera);
                     // camera.position.set(0, 270, 0);
                     // camera.lookAt(new Vector3(0, 0, 0));
-                    currentScene = config.Scene.NEXT;
+                    currentScene = config.Scene.LEVEL2;
                     changeScene();
                 }
 

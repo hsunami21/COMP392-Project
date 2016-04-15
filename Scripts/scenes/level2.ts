@@ -1200,7 +1200,7 @@ module scenes {
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 1) {
+                if (this.locationsLeft == 10) {
                     document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);

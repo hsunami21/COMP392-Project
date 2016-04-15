@@ -538,7 +538,7 @@ var scenes;
                 else {
                     this.gameOver = true;
                 }
-                if (this.locationsLeft == 1) {
+                if (this.locationsLeft == 5) {
                     this.next = true;
                 }
                 this.velocity = new Vector3();
@@ -804,7 +804,7 @@ var scenes;
                     this.player.remove(camera);
                     // camera.position.set(0, 270, 0);
                     // camera.lookAt(new Vector3(0, 0, 0));
-                    currentScene = config.Scene.NEXT;
+                    currentScene = config.Scene.LEVEL2;
                     changeScene();
                 }
                 //  this.coins.forEach(coin => {
