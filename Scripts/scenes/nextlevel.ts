@@ -35,6 +35,8 @@ module scenes {
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++
 
         public start(): void {
+            console.log('Previous Level: ' + previousLevel);
+            
             this._gameLabel = new createjs.Text(
                 "NEXT LEVEL",
                 "64px Consolas",
@@ -61,8 +63,15 @@ module scenes {
             });
 
             this._nextLevelButton.on("click", (event: createjs.MouseEvent) => {
-                currentScene = config.Scene.LEVEL2;
-                changeScene();
+                if (previousLevel == config.Scene.LEVEL1) {
+                    currentScene = config.Scene.LEVEL2;
+                    changeScene();
+                }
+                else if (previousLevel == config.Scene.LEVEL2) {
+                    currentScene = config.Scene.LEVEL3;
+                    changeScene();
+                }
+                
             });
             
         }

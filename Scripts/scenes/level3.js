@@ -58,7 +58,7 @@ var scenes;
             this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
-            this.locationsLeft = 0;
+            this.locationsLeft = 2;
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
             // setup a THREE.JS Clock object
@@ -767,7 +767,7 @@ var scenes;
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
+                // if (this.locationsLeft == 0) {
                 //     this.next = true;
                 // }
                 this.velocity = new Vector3();
@@ -1010,7 +1010,7 @@ var scenes;
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
@@ -1019,7 +1019,7 @@ var scenes;
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
@@ -1028,7 +1028,7 @@ var scenes;
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
@@ -1037,7 +1037,7 @@ var scenes;
                 if (eventObject.name === "YellowPlatform" && this.gotoText == "Yellow Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "YellowPlatform" && this.gotoText != "Yellow Platform") {
@@ -1046,7 +1046,7 @@ var scenes;
                 if (eventObject.name === "CyanPlatform" && this.gotoText == "Cyan Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "CyanPlatform" && this.gotoText != "Cyan Platform") {
@@ -1055,7 +1055,7 @@ var scenes;
                 if (eventObject.name === "MagentaPlatform" && this.gotoText == "Magenta Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "MagentaPlatform" && this.gotoText != "Magenta Platform") {
@@ -1064,7 +1064,7 @@ var scenes;
                 if (eventObject.name === "BlackPlatform" && this.gotoText == "Black Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BlackPlatform" && this.gotoText != "Black Platform") {
@@ -1073,7 +1073,7 @@ var scenes;
                 if (eventObject.name === "WhitePlatform" && this.gotoText == "White Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "WhitePlatform" && this.gotoText != "White Platform") {
@@ -1082,7 +1082,7 @@ var scenes;
                 if (eventObject.name === "RainbowPlatform" && this.gotoText == "Rainbow Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RainbowPlatform" && this.gotoText != "Rainbow Platform") {
@@ -1326,11 +1326,11 @@ var scenes;
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 10) {
+                if (this.next) {
                     document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL3;
+                    currentScene = config.Scene.OVER;
                     changeScene();
                 }
                 this.checkControls();

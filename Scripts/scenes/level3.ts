@@ -171,7 +171,7 @@ module scenes {
             this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
-            this.locationsLeft = 0;
+            this.locationsLeft = 2;
 
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
@@ -1016,7 +1016,7 @@ module scenes {
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
+                // if (this.locationsLeft == 0) {
                 //     this.next = true;
                 // }
 
@@ -1306,7 +1306,7 @@ module scenes {
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
@@ -1316,7 +1316,7 @@ module scenes {
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
@@ -1326,7 +1326,7 @@ module scenes {
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
@@ -1336,7 +1336,7 @@ module scenes {
                 if (eventObject.name === "YellowPlatform" && this.gotoText == "Yellow Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "YellowPlatform" && this.gotoText != "Yellow Platform") {
@@ -1346,7 +1346,7 @@ module scenes {
                 if (eventObject.name === "CyanPlatform" && this.gotoText == "Cyan Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "CyanPlatform" && this.gotoText != "Cyan Platform") {
@@ -1356,7 +1356,7 @@ module scenes {
                 if (eventObject.name === "MagentaPlatform" && this.gotoText == "Magenta Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "MagentaPlatform" && this.gotoText != "Magenta Platform") {
@@ -1366,7 +1366,7 @@ module scenes {
                 if (eventObject.name === "BlackPlatform" && this.gotoText == "Black Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BlackPlatform" && this.gotoText != "Black Platform") {
@@ -1376,7 +1376,7 @@ module scenes {
                 if (eventObject.name === "WhitePlatform" && this.gotoText == "White Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "WhitePlatform" && this.gotoText != "White Platform") {
@@ -1386,7 +1386,7 @@ module scenes {
                 if (eventObject.name === "RainbowPlatform" && this.gotoText == "Rainbow Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RainbowPlatform" && this.gotoText != "Rainbow Platform") {
@@ -1648,11 +1648,11 @@ module scenes {
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 10) {
+                if (this.next) {
                     document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL3;
+                    currentScene = config.Scene.OVER;
                     changeScene();
                 }
 

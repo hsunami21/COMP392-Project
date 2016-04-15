@@ -37,6 +37,7 @@ var myWorker = new Worker(Physijs.scripts.worker);
 
 // Game Variables
 var scene: scenes.Scene;
+var previousLevel: number;
 var currentScene: number;
 var renderer: Renderer;
 var camera: PerspectiveCamera;

@@ -30,6 +30,7 @@ var scenes;
         };
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++
         Next.prototype.start = function () {
+            console.log('Previous Level: ' + previousLevel);
             this._gameLabel = new createjs.Text("NEXT LEVEL", "64px Consolas", "#000000");
             this._gameLabel.regX = this._gameLabel.getMeasuredWidth() * 0.5;
             this._gameLabel.regY = this._gameLabel.getMeasuredLineHeight() * 0.5;
@@ -49,8 +50,14 @@ var scenes;
                 event.target.alpha = 1.0;
             });
             this._nextLevelButton.on("click", function (event) {
-                currentScene = config.Scene.LEVEL2;
-                changeScene();
+                if (previousLevel == config.Scene.LEVEL1) {
+                    currentScene = config.Scene.LEVEL2;
+                    changeScene();
+                }
+                else if (previousLevel == config.Scene.LEVEL2) {
+                    currentScene = config.Scene.LEVEL3;
+                    changeScene();
+                }
             });
         };
         Next.prototype.update = function () {

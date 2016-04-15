@@ -144,7 +144,7 @@ module scenes {
             this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
-            this.locationsLeft = 0;
+            this.locationsLeft = 1;
 
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
@@ -737,7 +737,7 @@ module scenes {
             } else {
                 this.keyboardControls.enabled = false;
                 this.mouseControls.enabled = false;
-                if (this.gameOver) {
+                if (this.gameOver || this.next) {
                     this.blocker.style.display = 'none';
                     document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
                     document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
@@ -753,23 +753,7 @@ module scenes {
                     this.blocker.style.display = 'box';
                     this.instructions.style.display = '';
                 }
-                //  if (this.next) {
-                //      this.blocker.style.display = 'none';
-                //      document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                //      document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                //      document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                //  }
-                //  else {
-                //      // disable our mouse and keyboard controls
-                //      this.blocker.style.display = '-webkit-box';
-                //      this.blocker.style.display = '-moz-box';
-                //      this.blocker.style.display = 'box';
-                //      this.instructions.style.display = '';
-                //  }
-
+              
                 console.log("PointerLock disabled");
             }
         }
@@ -805,9 +789,10 @@ module scenes {
                 else {
                     this.gameOver = true;
                 }
-                // if (this.locationsLeft == 1) {
-                //     this.next = true;
-                // }
+                
+                if (this.locationsLeft == 0) {
+                    this.next = true;
+                }
 
                 this.velocity = new Vector3();
 
@@ -1059,7 +1044,7 @@ module scenes {
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
@@ -1069,7 +1054,7 @@ module scenes {
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
@@ -1079,7 +1064,7 @@ module scenes {
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
@@ -1089,7 +1074,7 @@ module scenes {
                 if (eventObject.name === "YellowPlatform" && this.gotoText == "Yellow Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "YellowPlatform" && this.gotoText != "Yellow Platform") {
@@ -1099,7 +1084,7 @@ module scenes {
                 if (eventObject.name === "CyanPlatform" && this.gotoText == "Cyan Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "CyanPlatform" && this.gotoText != "Cyan Platform") {
@@ -1109,7 +1094,7 @@ module scenes {
                 if (eventObject.name === "MagentaPlatform" && this.gotoText == "Magenta Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "MagentaPlatform" && this.gotoText != "Magenta Platform") {
@@ -1185,6 +1170,7 @@ module scenes {
          */
         public update(): void {
 
+            console.log('START: ' + this.waitStart);
             var time2: number = performance.now();
             var delta = (time2 - this.prevUpdateTime) / 1000;
 
@@ -1200,11 +1186,12 @@ module scenes {
                     currentScene = config.Scene.OVER;
                     changeScene();
                 }
-                if (this.locationsLeft == 10) {
+                if (this.next == true) {
                     document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
-                    currentScene = config.Scene.LEVEL3;
+                    previousLevel = config.Scene.LEVEL2;
+                    currentScene = config.Scene.NEXT;
                     changeScene();
                 }
 

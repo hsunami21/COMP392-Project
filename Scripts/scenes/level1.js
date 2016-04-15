@@ -58,7 +58,7 @@ var scenes;
             this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
-            this.locationsLeft = 0;
+            this.locationsLeft = 1;
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
             // setup a THREE.JS Clock object
@@ -465,50 +465,32 @@ var scenes;
          * @return void
          */
         Level1.prototype.pointerLockChange = function (event) {
-            if (currentScene == config.Scene.LEVEL1) {
-                if (document.pointerLockElement === this.element) {
-                    // enable our mouse and keyboard controls
-                    this.keyboardControls.enabled = true;
-                    this.mouseControls.enabled = true;
+            if (document.pointerLockElement === this.element) {
+                // enable our mouse and keyboard controls
+                this.keyboardControls.enabled = true;
+                this.mouseControls.enabled = true;
+                this.blocker.style.display = 'none';
+            }
+            else {
+                this.keyboardControls.enabled = false;
+                this.mouseControls.enabled = false;
+                if (this.gameOver || this.next) {
                     this.blocker.style.display = 'none';
+                    document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
+                    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+                    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+                    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
                 }
                 else {
-                    this.keyboardControls.enabled = false;
-                    this.mouseControls.enabled = false;
-                    if (this.gameOver) {
-                        this.blocker.style.display = 'none';
-                        document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                        document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                        document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                        document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                        document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                        document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                    }
-                    else {
-                        // disable our mouse and keyboard controls
-                        this.blocker.style.display = '-webkit-box';
-                        this.blocker.style.display = '-moz-box';
-                        this.blocker.style.display = 'box';
-                        this.instructions.style.display = '';
-                    }
-                    if (this.next) {
-                        this.blocker.style.display = 'none';
-                        document.removeEventListener('pointerlockchange', this.pointerLockChange.bind(this), false);
-                        document.removeEventListener('mozpointerlockchange', this.pointerLockChange.bind(this), false);
-                        document.removeEventListener('webkitpointerlockchange', this.pointerLockChange.bind(this), false);
-                        document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-                        document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-                        document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-                    }
-                    else {
-                        // disable our mouse and keyboard controls
-                        this.blocker.style.display = '-webkit-box';
-                        this.blocker.style.display = '-moz-box';
-                        this.blocker.style.display = 'box';
-                        this.instructions.style.display = '';
-                    }
-                    console.log("PointerLock disabled");
+                    // disable our mouse and keyboard controls
+                    this.blocker.style.display = '-webkit-box';
+                    this.blocker.style.display = '-moz-box';
+                    this.blocker.style.display = 'box';
+                    this.instructions.style.display = '';
                 }
+                console.log("PointerLock disabled");
             }
         };
         /**
@@ -538,7 +520,7 @@ var scenes;
                 else {
                     this.gameOver = true;
                 }
-                if (this.locationsLeft == 5) {
+                if (this.locationsLeft == 0) {
                     this.next = true;
                 }
                 this.velocity = new Vector3();
@@ -719,7 +701,7 @@ var scenes;
                 if (eventObject.name === "GreenPlatform" && this.gotoText == "Green Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "GreenPlatform" && this.gotoText != "Green Platform") {
@@ -728,7 +710,7 @@ var scenes;
                 if (eventObject.name === "BluePlatform" && this.gotoText == "Blue Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "BluePlatform" && this.gotoText != "Blue Platform") {
@@ -737,7 +719,7 @@ var scenes;
                 if (eventObject.name === "RedPlatform" && this.gotoText == "Red Platform") {
                     this.timerValue = 30;
                     this.scoreValue += 100;
-                    this.locationsLeft += 1;
+                    this.locationsLeft += -1;
                     this.gotoLabel.text = "GO TO: " + this.randomLocation();
                 }
                 else if (eventObject.name === "RedPlatform" && this.gotoText != "Red Platform") {
@@ -785,8 +767,9 @@ var scenes;
          * @returns void
          */
         Level1.prototype.update = function () {
+            console.log('START: ' + this.waitStart);
             var time2 = performance.now();
-            var delta = (time2 - this.prevUpdateTime) / 2000;
+            var delta = (time2 - this.prevUpdateTime) / 1000;
             if (this.waitStart == true) {
                 this.showLevel(delta);
             }
@@ -804,7 +787,8 @@ var scenes;
                     this.player.remove(camera);
                     // camera.position.set(0, 270, 0);
                     // camera.lookAt(new Vector3(0, 0, 0));
-                    currentScene = config.Scene.LEVEL2;
+                    previousLevel = config.Scene.LEVEL1;
+                    currentScene = config.Scene.NEXT;
                     changeScene();
                 }
                 //  this.coins.forEach(coin => {

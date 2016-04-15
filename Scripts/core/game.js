@@ -33,6 +33,7 @@ Physijs.scripts.ammo = "/Scripts/lib/Physijs/examples/js/ammo.js";
 var myWorker = new Worker(Physijs.scripts.worker);
 // Game Variables
 var scene;
+var previousLevel;
 var currentScene;
 var renderer;
 var camera;
