@@ -57,7 +57,7 @@ var scenes;
             this.prevTime = 0;
             this.prevUpdateTime = 0;
             this.waitTime = false;
-            this.waitStart1 = true;
+            this.waitStart = true;
             this.locationsLeft = 1;
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
@@ -105,7 +105,7 @@ var scenes;
         Level2.prototype.addSpotLight = function () {
             // Spot Light
             this.spotLight = new SpotLight(0xffffff);
-            this.spotLight.position.set(20, 128, -15);
+            this.spotLight.position.set(20, 300, -15);
             this.spotLight.castShadow = true;
             this.spotLight.intensity = 2;
             this.spotLight.lookAt(new Vector3(0, 0, 0));
@@ -129,11 +129,11 @@ var scenes;
          * @return void
          */
         Level2.prototype.addGround = function () {
-            this.groundTexture = new THREE.TextureLoader().load('../../Assets/images/GravelCobble.jpg');
+            this.groundTexture = new THREE.TextureLoader().load('../../Assets/images/floor.jpg');
             this.groundTexture.wrapS = THREE.RepeatWrapping;
             this.groundTexture.wrapT = THREE.RepeatWrapping;
             this.groundTexture.repeat.set(8, 8);
-            this.groundTextureNormal = new THREE.TextureLoader().load('../../Assets/images/GravelCobbleNormal.png');
+            this.groundTextureNormal = new THREE.TextureLoader().load('../../Assets/images/floor.jpg');
             this.groundTextureNormal.wrapS = THREE.RepeatWrapping;
             this.groundTextureNormal.wrapT = THREE.RepeatWrapping;
             this.groundTextureNormal.repeat.set(8, 8);
@@ -279,7 +279,7 @@ var scenes;
             //border walls
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             this.borderWall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall1.position.set(0, 1, 64);
             this.borderWall1.receiveShadow = true;
@@ -294,7 +294,7 @@ var scenes;
             console.log("Added borderWall 2 to Scene");
             //Horizontal
             this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             this.borderWall3 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall3.position.set(64, 1, 0);
             this.borderWall3.receiveShadow = true;
@@ -326,7 +326,7 @@ var scenes;
             this.add(this.wall2);
             console.log("Added wall 2 to Scene");
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 30);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             //wall 3
             this.wall3 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.wall3.position.set(30, 1, -50);
@@ -342,7 +342,7 @@ var scenes;
             this.add(this.wall4);
             console.log("Added wall 4 to Scene");
             this.wallHorizontalGeometry = new BoxGeometry(25, 10, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             //wall 5
             this.wall5 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.wall5.position.set(52, 1, -28);
@@ -372,7 +372,7 @@ var scenes;
             this.add(this.wall8);
             console.log("Added wall 8 to Scene");
             this.wallHorizontalGeometry = new BoxGeometry(60, 10, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             //wall 9
             this.wall9 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.wall9.position.set(0, 1, 22);
@@ -388,7 +388,7 @@ var scenes;
             this.add(this.wall10);
             console.log("Added wall 10 to Scene");
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 25);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             //wall 11
             this.wall11 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
             this.wall11.position.set(25, 1, 50);
@@ -720,7 +720,7 @@ var scenes;
             console.log("BEFORE: " + camera.rotation);
             self.showTimer += timer;
             if (self.showTimer > this.showTime) {
-                self.waitStart1 = false;
+                self.waitStart = false;
                 // create parent-child relationship with camera and player
                 camera.position.set(0, 1, 0);
                 camera.rotation.z = 2 * Math.PI;
@@ -921,10 +921,10 @@ var scenes;
          * @returns void
          */
         Level2.prototype.update = function () {
-            console.log('START: ' + this.waitStart1);
-            var time3 = performance.now();
-            var delta = (time3 - this.prevUpdateTime) / 1000;
-            if (this.waitStart1 == true) {
+            console.log('START: ' + this.waitStart);
+            var time2 = performance.now();
+            var delta = (time2 - this.prevUpdateTime) / 1000;
+            if (this.waitStart == true) {
                 this.showLevel(delta);
             }
             else {
@@ -945,7 +945,7 @@ var scenes;
                 }
                 this.checkControls();
             }
-            this.prevUpdateTime = time3;
+            this.prevUpdateTime = time2;
             this.stage.update();
             this.simulate();
         };

@@ -210,7 +210,7 @@ module scenes {
         private addSpotLight(): void {
             // Spot Light
             this.spotLight = new SpotLight(0xffffff);
-            this.spotLight.position.set(20, 128, -15);
+            this.spotLight.position.set(20, 300, -15);
             this.spotLight.castShadow = true;
             this.spotLight.intensity = 2;
             this.spotLight.lookAt(new Vector3(0, 0, 0));
@@ -235,12 +235,12 @@ module scenes {
          * @return void
          */
         private addGround(): void {
-            this.groundTexture = new THREE.TextureLoader().load('../../Assets/images/GravelCobble.jpg');
+            this.groundTexture = new THREE.TextureLoader().load('../../Assets/images/floor.jpg');
             this.groundTexture.wrapS = THREE.RepeatWrapping;
             this.groundTexture.wrapT = THREE.RepeatWrapping;
             this.groundTexture.repeat.set(8, 8);
 
-            this.groundTextureNormal = new THREE.TextureLoader().load('../../Assets/images/GravelCobbleNormal.png');
+            this.groundTextureNormal = new THREE.TextureLoader().load('../../Assets/images/floor.jpg');
             this.groundTextureNormal.wrapS = THREE.RepeatWrapping;
             this.groundTextureNormal.wrapT = THREE.RepeatWrapping;
             this.groundTextureNormal.repeat.set(8, 8);
@@ -412,7 +412,7 @@ module scenes {
             //border walls
             //Vertical
             this.wallHorizontalGeometry = new BoxGeometry(128, 50, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x01DF01 }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
 
             this.borderWall1 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall1.position.set(0, 1, 64);
@@ -430,7 +430,7 @@ module scenes {
 
             //Horizontal
             this.wallHorizontalGeometry = new BoxGeometry(1, 50, 128);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x0000FF }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
 
             this.borderWall3 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
             this.borderWall3.position.set(64, 1, 0);
@@ -469,7 +469,7 @@ module scenes {
             console.log("Added wall 2 to Scene");
             
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 30);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             
             //wall 3
             this.wall3 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
@@ -488,7 +488,7 @@ module scenes {
             console.log("Added wall 4 to Scene");
             
             this.wallHorizontalGeometry = new BoxGeometry(25, 10, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             
             //wall 5
             this.wall5 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -523,7 +523,7 @@ module scenes {
             console.log("Added wall 8 to Scene");
             
             this.wallHorizontalGeometry = new BoxGeometry(60, 10, 1);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             
             //wall 9
             this.wall9 = new Physijs.BoxMesh(this.wallHorizontalGeometry, this.wallMaterial, 0);
@@ -542,7 +542,7 @@ module scenes {
             console.log("Added wall 10 to Scene");
             
             this.wallVerticalGeometry = new BoxGeometry(1, 10, 25);
-            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x6E6E6E }), 0.4, 0);
+            this.wallMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../../Assets/images/wall.jpg') }));
             
             //wall 11
             this.wall11 = new Physijs.BoxMesh(this.wallVerticalGeometry, this.wallMaterial, 0);
