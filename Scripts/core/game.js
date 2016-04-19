@@ -53,6 +53,7 @@ var manifest = [
     { id: "hit", src: "../../Assets/audio/hit.wav" },
     { id: "coin", src: "../../Assets/audio/coin.mp3" },
     { id: "jump", src: "../../Assets/audio/Jump.wav" },
+    { id: "music", src: "../../Assets/audio/music.mp3" },
     { id: "StartButton", src: "../../Assets/images/Button_Play.png" },
     { id: "InstructionsButton", src: "../../Assets/images/Button_Instr.png" },
     { id: "RestartButton", src: "../../Assets/images/Button_Restart.png" },

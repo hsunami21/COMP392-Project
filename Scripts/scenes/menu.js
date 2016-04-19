@@ -36,6 +36,7 @@ var scenes;
             canvas.style.width = "100%";
             canvas.setAttribute("height", config.Screen.HEIGHT.toString());
             canvas.style.backgroundColor = "#ffffff";
+            //canvas.style.background("")
         };
         /**
          * This method sets up default values for class member variables

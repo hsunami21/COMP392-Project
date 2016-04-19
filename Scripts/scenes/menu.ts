@@ -40,6 +40,7 @@ module scenes {
             canvas.style.width = "100%";
             canvas.setAttribute("height", config.Screen.HEIGHT.toString());
             canvas.style.backgroundColor = "#ffffff";
+            //canvas.style.background("")
         }
 
 

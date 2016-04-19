@@ -131,7 +131,8 @@ module scenes {
             this.blocker = document.getElementById("blocker");
             this.instructions = document.getElementById("instructions");
             this.blocker.style.display = "block";
-
+            
+            createjs.Sound.play("music");
             // setup canvas for menu scene
             this._setupCanvas();
 
@@ -815,6 +816,7 @@ module scenes {
 
             // Set random location at start
             this.randomLocation();
+
 
             // Set Up Scoreboard
             this.setupScoreboard();
