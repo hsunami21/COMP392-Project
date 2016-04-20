@@ -141,7 +141,7 @@ module scenes {
             this.prevUpdateTime = 0;
             this.waitTime = false;
             this.waitStart = true;
-            this.locationsLeft = 1;
+            this.locationsLeft = 3;
 
             this.stage = new createjs.Stage(canvas);
             this.velocity = new Vector3(0, 0, 0);
