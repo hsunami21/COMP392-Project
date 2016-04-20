@@ -1168,8 +1168,12 @@ module scenes {
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
             console.log("BEFORE: " + camera.rotation);
-
-            self.showTimer += timer;
+            console.log("Timer: " + timer);
+            console.log("showtimer: " + self.showTimer);
+            
+            if (timer < 1){
+            self.showTimer += timer; }
+            
             if (self.showTimer > this.showTime) {
                 self.waitStart = false;
                 // create parent-child relationship with camera and player

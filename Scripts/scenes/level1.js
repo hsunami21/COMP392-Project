@@ -613,7 +613,10 @@ var scenes;
             camera.position.set(0, 270, 0);
             camera.lookAt(new Vector3(0, 0, 0));
             console.log("BEFORE: " + camera.rotation);
-            self.showTimer += timer;
+            console.log("timer Stage 1: " + timer);
+            if (timer < 1) {
+                self.showTimer += timer;
+            }
             if (self.showTimer > this.showTime) {
                 self.waitStart = false;
                 // create parent-child relationship with camera and player
@@ -786,16 +789,10 @@ var scenes;
                     document.exitPointerLock();
                     this.children = [];
                     this.player.remove(camera);
-                    // camera.position.set(0, 270, 0);
-                    // camera.lookAt(new Vector3(0, 0, 0));
                     previousLevel = config.Scene.LEVEL1;
                     currentScene = config.Scene.NEXT;
                     changeScene();
                 }
-                //  this.coins.forEach(coin => {
-                //      coin.setAngularFactor(new Vector3(0, 0, 0));
-                //      coin.setAngularVelocity(new Vector3(0, 1, 0));
-                //  });
                 this.checkControls();
             }
             this.prevUpdateTime = time2;
